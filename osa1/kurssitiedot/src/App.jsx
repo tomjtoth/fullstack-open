@@ -2,11 +2,18 @@ const Header = ({course}) => (
   <h1>{course}</h1>
 )
 
-// eikö just sovittiin, että kantsii kierrettää uudelleen komponentteja...
-const Content = ({part, ex}) => (
+const Part = ({part, ex}) => (
   <p>
     {part} {ex}
   </p>
+)
+
+const Content = ({parts: [p1,p2,p3], exs: [ex1,ex2,ex3]}) => (
+  <>
+    <Part part={p1} ex={ex1}></Part>
+    <Part part={p2} ex={ex2}></Part>
+    <Part part={p3} ex={ex3}></Part>
+  </>
 )
 
 const Total = ({ex1,ex2,ex3}) => (
@@ -27,9 +34,11 @@ const App = () => {
   return (
     <div>
       <Header course={course}></Header>
-      <Content part={part1} ex={exercises1}></Content>
-      <Content part={part2} ex={exercises2}></Content>
-      <Content part={part3} ex={exercises3}></Content>
+      <Content parts={
+        [part1,part2,part3]
+      } exs={
+        [exercises1,exercises2,exercises3]
+      }></Content>
       <Total ex1={exercises1} ex2={exercises2} ex3={exercises3}></Total>
     </div>
   )
