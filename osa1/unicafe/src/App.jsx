@@ -23,6 +23,24 @@ const Pos = ({tbl:[pos,neu,neg]}) => (
   <Label text="positive" count={pos/(pos+neu+neg)*100 + ' %'} />
 )
 
+const Statistics = ({values:[good, neutral, bad]}) => (
+  <>
+    <h1>statistics</h1>
+
+    <Label text="good" count={good} />
+    <br />
+    <Label text="neutral" count={neutral} />
+    <br />
+    <Label text="bad" count={bad} />
+    <br />
+    <All tbl={[good,neutral,bad]} />
+    <br />
+    <Avg tbl={[good,neutral,bad]} />
+    <br />
+    <Pos tbl={[good,neutral,bad]} />
+  </>
+)
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -37,20 +55,7 @@ const App = () => {
       <Button handler={() => setNeutral(neutral + 1)} text="neutral" />
       <Button handler={() => setBad(bad + 1)} text="bad" />
       
-      <h1>statistics</h1>
-
-      <Label text="good" count={good} />
-      <br />
-      <Label text="neutral" count={neutral} />
-      <br />
-      <Label text="bad" count={bad} />
-      <br />
-      <All tbl={[good,neutral,bad]} />
-      <br />
-      <Avg tbl={[good,neutral,bad]} />
-      <br />
-      <Pos tbl={[good,neutral,bad]} />
-
+      <Statistics values={[good, neutral, bad]} />
     </div>
   )
 }
