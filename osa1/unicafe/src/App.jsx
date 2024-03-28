@@ -4,26 +4,14 @@ const Button = ({handler, text}) => (
   <button onClick={handler}>{text}</button>
 )
 
-const Label = ({text, count}) => (
-  <>{text} {count}</>
+const StatisticLine = ({text, value}) => (
+  <tr>
+    <td>{text}</td> 
+    <td>{value}</td>
+  </tr>
 )
 
-const getSum = (tbl) => tbl.reduce((v,sub_tot) => v+sub_tot);
-
-const All = ({tbl}) => (
-  <Label text="all" count={getSum(tbl)} />
-)
-
-const Avg = ({tbl:[pos,neu,neg]}) => (
-  <Label text="average" count={(pos-neg)/(pos+neu+neg)} />
-)
-
-
-const Pos = ({tbl:[pos,neu,neg]}) => (
-  <Label text="positive" count={pos/(pos+neu+neg)*100 + ' %'} />
-)
-
-const Statistics = ({values:[good, neutral, bad]}) => {
+const Statistics = ({values: [good, neutral, bad]}) => {
   if (good+neutral+bad === 0)
     return (
       <>
@@ -36,17 +24,18 @@ const Statistics = ({values:[good, neutral, bad]}) => {
     <>
       <h1>statistics</h1>
 
-      <Label text="good" count={good} />
-      <br />
-      <Label text="neutral" count={neutral} />
-      <br />
-      <Label text="bad" count={bad} />
-      <br />
-      <All tbl={[good,neutral,bad]} />
-      <br />
-      <Avg tbl={[good,neutral,bad]} />
-      <br />
-      <Pos tbl={[good,neutral,bad]} />
+      <table>
+        <tbody>
+
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+
+          <StatisticLine text="all" value={good + neutral + bad} />
+          <StatisticLine text="average" value={(good-bad)/(good+neutral+bad)} />
+          <StatisticLine text="positive" value={good/(good+neutral+bad)*100 + ' %'} />
+        </tbody>
+      </table>
     </>
 )
 }
