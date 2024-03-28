@@ -5,7 +5,22 @@ const Button = ({handler, text}) => (
 )
 
 const Label = ({text, count}) => (
-  <text>{text} {count}</text>
+  <>{text} {count}</>
+)
+
+const getSum = (tbl) => tbl.reduce((v,sub_tot) => v+sub_tot);
+
+const All = ({tbl}) => (
+  <Label text="all" count={getSum(tbl)} />
+)
+
+const Avg = ({tbl:[pos,neu,neg]}) => (
+  <Label text="average" count={(pos-neg)/(pos+neu+neg)} />
+)
+
+
+const Pos = ({tbl:[pos,neu,neg]}) => (
+  <Label text="positive" count={pos/(pos+neu+neg)*100 + ' %'} />
 )
 
 const App = () => {
@@ -29,6 +44,12 @@ const App = () => {
       <Label text="neutral" count={neutral} />
       <br />
       <Label text="bad" count={bad} />
+      <br />
+      <All tbl={[good,neutral,bad]} />
+      <br />
+      <Avg tbl={[good,neutral,bad]} />
+      <br />
+      <Pos tbl={[good,neutral,bad]} />
 
     </div>
   )
