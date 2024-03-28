@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -8,72 +11,14 @@ const App = () => {
   const [newNum, setNewNum] = useState('')
   const [filter, setFilter] = useState('')
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
-
-  const handleNumChange = (event) => {
-    setNewNum(event.target.value)
-  }
-
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-  }
-
-  const addPerson = (event) => {
-    event.preventDefault()
-
-    if (persons.some(({ name }) => name == newName)) {
-      alert(`${newName} is already added to phonebook`);
-      return;
-    }
-
-    setPersons(persons.concat({
-      name: newName,
-      num: newNum
-    }))
-    setNewName('')
-    setNewNum('')
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with
-      <input
-        value={filter}
-        onChange={handleFilterChange} />
+      <Filter x={{ filter, setFilter }} />
       <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={handleNameChange} />
-        </div>
-        <div>
-          number:
-          <input
-            value={newNum}
-            onChange={handleNumChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm x={{ persons, setPersons, newName, setNewName, newNum, setNewNum }} />
       <h2>Numbers</h2>
-      <ul>
-        {(
-          filter === ''
-            ? persons
-            : persons.filter(({ name, num }) =>
-              name.includes(filter) || num.includes(filter))
-        ).map(({ name, num }, idx) => (
-          <li key={idx}>
-            {name} {num}
-          </li>
-        ))}
-      </ul>
+      <Persons x={{ persons, filter }} />
 
     </div>
   )
