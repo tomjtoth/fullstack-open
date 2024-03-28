@@ -6,6 +6,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
+  const [filter, setFilter] = useState('')
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -13,6 +14,10 @@ const App = () => {
 
   const handleNumChange = (event) => {
     setNewNum(event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
   }
 
   const addPerson = (event) => {
@@ -34,6 +39,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with
+      <input
+        value={filter}
+        onChange={handleFilterChange} />
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name:
@@ -53,7 +63,12 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(({ name, num }, idx) => (
+        {(
+          filter === ''
+            ? persons
+            : persons.filter(({ name, num }) =>
+              name.includes(filter) || num.includes(filter))
+        ).map(({ name, num }, idx) => (
           <li key={idx}>
             {name} {num}
           </li>
