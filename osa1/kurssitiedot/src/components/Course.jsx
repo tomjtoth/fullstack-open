@@ -9,30 +9,31 @@ const Part = ({ name, exercises }) => (
 )
 
 const Content = ({ parts }) => (
-    <ul>
+    <>
         {parts.map(({ name, exercises, id }) => <Part
             key={id}
             name={name}
             exercises={exercises} />)}
-    </ul>
+    </>
 )
 
-const Total = ({ parts: [
-    { exercises: ex1 },
-    { exercises: ex2 },
-    { exercises: ex3 }
-] }) => (
+const Total = ({ parts }) => (
     <p>
-        Number of exercises {ex1 + ex2 + ex3}
+        <b>
+            total of {
+                parts
+                    .map(({ exercises }) => exercises)
+                    .reduce((prev, curr) => prev + curr)
+            } exercises
+        </b>
     </p>
 )
 
-const Course = ({ course: { name, id, parts } }) => (
+const Course = ({ course: { name, parts } }) => (
     <>
         <Header course={name} />
         <Content parts={parts} />
-        {/* <Total parts={parts}></Total> */}
-
+        <Total parts={parts} />
     </>
 )
 
