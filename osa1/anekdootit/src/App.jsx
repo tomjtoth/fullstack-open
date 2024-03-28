@@ -4,11 +4,14 @@ const Button = ({ handler, text }) => (
   <button onClick={handler}>{text}</button>
 )
 
-const voteSelected = (selected, votes, setVotes) => {
-  const new_arr = [...votes];
-  new_arr[selected]++;
-  setVotes(new_arr);
-}
+const TextBlock = ({ h1, anecdote, votes }) => (
+  <>
+    <h1>{h1}</h1>
+    {anecdote}
+    <br />
+    has {votes} votes
+  </>
+)
 
 const App = () => {
   const anecdotes = [
@@ -23,23 +26,38 @@ const App = () => {
   ]
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(anecdotes.map(_ => 0));
+  const [best, setBest] = useState(0);
 
+
+  const handleVoting = () => {
+    const new_arr = [...votes];
+    new_arr[selected]++;
+    setVotes(new_arr);
+    setBest(new_arr.indexOf(Math.max(...new_arr)));
+  }
 
 
   return (
     <div>
-      {anecdotes[selected]}
-      <br />
-      has {votes[selected]} votes
+      <TextBlock
+        h1="Anecdote of the day"
+        anecdote={anecdotes[selected]}
+        votes={votes[selected]} />
+
       <br />
 
       <Button
-        handler={() => voteSelected(selected, votes, setVotes)}
+        handler={handleVoting}
         text="vote" />
 
       <Button
         handler={() => setSelected(Math.floor(Math.random() * anecdotes.length))}
         text="next anecdote" />
+
+      <TextBlock
+        h1="Anecdote with most votes"
+        anecdote={anecdotes[best]}
+        votes={votes[best]} />
 
     </div>
   )
