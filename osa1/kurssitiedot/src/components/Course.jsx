@@ -1,20 +1,20 @@
 const Header = ({ course }) => (
-    <h1>{course}</h1>
+    <h3>{course}</h3>
 )
 
 const Part = ({ name, exercises }) => (
-    <p>
+    <li>
         {name} {exercises}
-    </p>
+    </li>
 )
 
 const Content = ({ parts }) => (
-    <>
+    <ul>
         {parts.map(({ name, exercises, id }) => <Part
             key={id}
             name={name}
             exercises={exercises} />)}
-    </>
+    </ul>
 )
 
 const Total = ({ parts }) => (
@@ -24,17 +24,17 @@ const Total = ({ parts }) => (
                 parts
                     .map(({ exercises }) => exercises)
                     .reduce((prev, curr) => prev + curr)
-            } exercises
+            }&nbsp;exercises
         </b>
     </p>
 )
 
-const Course = ({ course: { name, parts } }) => (
-    <>
+const Course = ({ name, parts }) => (
+    <li>
         <Header course={name} />
         <Content parts={parts} />
         <Total parts={parts} />
-    </>
+    </li>
 )
 
 
