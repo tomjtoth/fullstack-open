@@ -4,6 +4,7 @@ const Filter = ({ x: { filter, setFilter } }) => (
         <input
             value={filter}
             onChange={({ target: { value } }) => setFilter(value)}
+            title="case-insensitive regex"
             placeholder="type something to narrow your search" />
     </>
 )

@@ -1,6 +1,20 @@
 const Results = ({ x: { filter, countries } }) => {
 
-    const re_filter = new RegExp(filter, 'i');
+    let re_filter;
+
+    try {
+        re_filter = new RegExp(filter, 'i');
+    }
+    catch (e) {
+        console.log(e)
+        return (
+            <p>
+                <i>"know NOT regex, you"</i>
+                &nbsp;- master Yoda
+            </p>
+        )
+    }
+
 
     if (!countries || filter === '') return null;
 
