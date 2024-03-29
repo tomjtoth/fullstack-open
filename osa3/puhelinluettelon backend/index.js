@@ -41,6 +41,15 @@ app.get('/info', (_req, resp) => {
 app.post('/api/persons', (req, resp) => {
     const { name, number } = req.body;
 
+    if (!number)
+        return resp.status(400).json({ error: "missing number" });
+
+    if (!name)
+        return resp.status(400).json({ error: "missing name" });
+
+    if (persons.some(p => p.name === name))
+        return resp.status(400).json({ error: "name must be unique" });
+
     const new_peep = { name, number, id: ++max_id };
 
     persons.push(new_peep);

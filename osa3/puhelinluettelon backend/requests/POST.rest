@@ -1,8 +1,24 @@
-# create new
+### create new
 POST http://localhost:3001/api/persons
 content-type: application/json
 
 {
     "name": "someone new",
+    "number": "555-123456789"
+}
+
+### missing number field should fail with 400
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "someone new"
+}
+
+### missing name field should fail with 400
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
     "number": "555-123456789"
 }

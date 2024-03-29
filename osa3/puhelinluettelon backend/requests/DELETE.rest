@@ -1,7 +1,5 @@
-# delete non-existing
+### delete non-existing should fail with 404
 DELETE http://localhost:3001/api/persons/-1
 
-###
-
-# delete existing
+### delete existing should succeed with 204
 DELETE http://localhost:3001/api/persons/1
