@@ -26,17 +26,34 @@ let persons = [
 
 app.use(express.json());
 
-app.get('/info', (request, response) => {
-    response.send(`
+app.get('/info', (_req, resp) => {
+    resp.send(`
         <p>Phonebook has info for ${persons.length} people</p>
         <br />
         <p>${new Date().toString()}</p>
     `);
-})
+});
 
-app.get('/api/persons', (request, response) => {
-    response.json(persons);
-})
+app.get('/api/persons', (_req, resp) => {
+    resp.json(persons);
+});
+
+app.get('/api/persons/:id', (req, resp) => {
+
+    const wanted_id = Number(req.params.id);
+
+    const pp = persons.find(({ id }) => id === wanted_id);
+
+    if (pp)
+        return resp.json(pp);
+
+    resp
+        .status(404)
+        .send({
+            error: `id "${wanted_id}" does not exist`
+        });
+});
+
 
 const PORT = 3001;
 app.listen(PORT, () => {
