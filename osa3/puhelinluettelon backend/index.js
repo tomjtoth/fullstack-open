@@ -72,7 +72,7 @@ app.get('/api/persons/:id', (req, resp) => {
 
     resp
         .status(404)
-        .send({
+        .json({
             error: `id "${wanted_id}" does not exist`
         });
 });
@@ -89,7 +89,7 @@ app.delete('/api/persons/:id', (req, resp) => {
 
     resp
         .status(404)
-        .send({
+        .json({
             error: `id "${wanted_id}" does not exist`
         });
 
