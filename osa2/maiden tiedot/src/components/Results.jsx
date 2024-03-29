@@ -1,4 +1,4 @@
-const Results = ({ x: { filter, countries } }) => {
+const Results = ({ x: { filter, setFilter, countries } }) => {
 
     let re_filter;
 
@@ -64,8 +64,13 @@ const Results = ({ x: { filter, countries } }) => {
 
     return (
         <ul>
-            {filtered_list.map(({ name: { common }, cca2 }) =>
-                <li key={cca2}>{common}</li>
+            {filtered_list.map(({ name: { common: name }, cca2 }) =>
+                <li key={cca2}>
+                    {name}
+                    <button onClick={() =>
+                        setFilter('^' + name + '$')
+                    }>show</button>
+                </li>
             )}
         </ul>
     )

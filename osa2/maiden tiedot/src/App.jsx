@@ -16,7 +16,7 @@ const App = () => {
   return (
     <>
       <Filter x={{ filter, setFilter }} />
-      <Results x={{ filter, countries }} />
+      <Results x={{ filter, setFilter, countries }} />
     </>
   )
 }
