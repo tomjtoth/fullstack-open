@@ -18,7 +18,21 @@ const PersonForm = ({ x: {
         event.preventDefault()
 
         if (persons.some(({ name }) => name == newName)) {
-            alert(`${newName} is already added to phonebook`);
+            if (confirm(
+                `${newName} is already added to phonebook,`
+                + " replace old number with the new one ? "
+            )) {
+                backend.updateExisting({
+                    ...persons.find(({ name }) => name === newName),
+                    number: newNum
+                }).then(updatedPerson =>
+                    setPersons(persons.map(p =>
+                        p.id === updatedPerson.id
+                            ? updatedPerson
+                            : p
+                    ))
+                )
+            }
             return;
         }
 
