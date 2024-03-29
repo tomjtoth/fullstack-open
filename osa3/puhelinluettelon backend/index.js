@@ -54,6 +54,24 @@ app.get('/api/persons/:id', (req, resp) => {
         });
 });
 
+app.delete('/api/persons/:id', (req, resp) => {
+    const wanted_id = Number(req.params.id);
+    const pp = persons.findIndex(({ id }) => id === wanted_id);
+
+    if (pp >= 0) {
+        persons.splice(pp, 1);
+
+        return resp.status(204).end();
+    }
+
+    resp
+        .status(404)
+        .send({
+            error: `id "${wanted_id}" does not exist`
+        });
+
+});
+
 
 const PORT = 3001;
 app.listen(PORT, () => {
