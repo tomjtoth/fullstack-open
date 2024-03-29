@@ -16,9 +16,17 @@ const Persons = ({ x: {
                     setPersons(persons.filter(p => p.id !== deletedPerson.id));
 
                     setFeedback({
-                        class: 'info',
+                        class: 'feedback',
                         text: `deleting ${name} succeeded!`
                     });
+                })
+                .catch(_ => {
+                    setFeedback({
+                        class: 'feedback error',
+                        text: `${name} was already deleted`
+                    });
+
+                    setPersons(persons.filter(p => p.id !== id));
                 })
         };
     }

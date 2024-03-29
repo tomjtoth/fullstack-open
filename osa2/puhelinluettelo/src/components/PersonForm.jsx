@@ -32,10 +32,16 @@ const PersonForm = ({ x: {
                             ? updatedPerson
                             : p
                     ))
-                )
+                ).catch(_ => {
+                    setFeedback({
+                        class: 'error',
+                        text: `${newName} was already deleted`
+                    });
+                    setPersons(persons.filter(p => p.id !== id));
+                })
 
                 setFeedback({
-                    class: 'info',
+                    class: 'feedback',
                     text: `updating ${newName} succeeded!`
                 })
             }
@@ -52,7 +58,7 @@ const PersonForm = ({ x: {
                 setNewNum('')
 
                 setFeedback({
-                    class: 'info',
+                    class: 'feedback',
                     text: `creating ${newName} succeeded!`
                 })
             })

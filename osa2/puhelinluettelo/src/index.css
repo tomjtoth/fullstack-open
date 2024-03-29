@@ -1,17 +1,13 @@
-.info {
-    border: 3px solid green;
+.feedback {
     color: green;
-    background-color: lightgray;
-    padding-top: 5px;
-    font-size: 15px;
-}
-
-.error {
-    color: red;
     background: lightgrey;
     font-size: 20px;
     border-style: solid;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.feedback.error {
+    color: red
 }
