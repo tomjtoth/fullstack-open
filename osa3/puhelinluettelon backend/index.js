@@ -24,14 +24,28 @@ let persons = [
     }
 ];
 
+// the suggested `Math.random()` makes no sense, this works like an auto-increment DB primary key...
+let max_id = 4;
+
+//Math.max(...persons.map(({ id }) => id));
+
 app.use(express.json());
 
 app.get('/info', (_req, resp) => {
     resp.send(`
         <p>Phonebook has info for ${persons.length} people</p>
-        <br />
         <p>${new Date().toString()}</p>
     `);
+});
+
+app.post('/api/persons', (req, resp) => {
+    const { name, number } = req.body;
+
+    const new_peep = { name, number, id: ++max_id };
+
+    persons.push(new_peep);
+
+    resp.status(201).json(new_peep);
 });
 
 app.get('/api/persons', (_req, resp) => {
