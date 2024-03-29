@@ -10,4 +10,8 @@ const createNew = (person) => axios
     .post(BASE_URL, person)
     .then(({ data }) => data);
 
-export default { getAll, createNew }
+const deleteExisting = (id) => axios
+    .delete(BASE_URL + '/' + id)
+    .then(({ data }) => data);
+
+export default { getAll, createNew, deleteExisting }
