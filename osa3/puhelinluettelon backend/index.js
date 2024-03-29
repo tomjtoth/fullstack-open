@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+var morgan = require('morgan')
 
 let persons = [
     {
@@ -30,6 +31,7 @@ let max_id = 4;
 //Math.max(...persons.map(({ id }) => id));
 
 app.use(express.json());
+app.use(morgan('tiny'));
 
 app.get('/info', (_req, resp) => {
     resp.send(`
