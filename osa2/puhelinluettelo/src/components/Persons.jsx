@@ -6,11 +6,11 @@ const Persons = ({ x: { persons, filter } }) => {
         <ul>
             {(filter === ''
                 ? persons
-                : persons.filter(({ name, num }) =>
-                    name.toLowerCase().includes(lc_filter) || num.includes(filter))
-            ).map(({ name, num }, idx) => (
+                : persons.filter(({ name, number }) =>
+                    name.toLowerCase().includes(lc_filter) || number.includes(filter))
+            ).map(({ name, number }, idx) => (
                 <li key={idx}>
-                    {name} {num}
+                    {name} {number}
                 </li>
             ))}
         </ul>

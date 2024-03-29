@@ -22,7 +22,7 @@ const PersonForm = ({ x: {
 
         setPersons(persons.concat({
             name: newName,
-            num: newNum
+            number: newNum
         }))
         setNewName('')
         setNewNum('')
