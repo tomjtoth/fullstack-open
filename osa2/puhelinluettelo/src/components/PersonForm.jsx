@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const PersonForm = ({ x: {
     persons, setPersons,
     newName, setNewName,
@@ -20,12 +22,16 @@ const PersonForm = ({ x: {
             return;
         }
 
-        setPersons(persons.concat({
+        axios.post("http://localhost:3001/persons", {
             name: newName,
             number: newNum
-        }))
-        setNewName('')
-        setNewNum('')
+        })
+            .then(({ data }) => {
+                setPersons(persons.concat(data))
+                setNewName('')
+                setNewNum('')
+            })
+
     }
 
     return (

@@ -14,7 +14,6 @@ const App = () => {
     axios
       .get('http://localhost:3001/persons')
       .then(({ data }) => {
-        console.log('promise fulfilled')
         setPersons(data)
       })
   }, [])
