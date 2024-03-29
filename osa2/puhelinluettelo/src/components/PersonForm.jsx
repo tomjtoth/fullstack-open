@@ -1,4 +1,4 @@
-import axios from "axios"
+import backend from '../services/persons'
 
 const PersonForm = ({ x: {
     persons, setPersons,
@@ -22,11 +22,11 @@ const PersonForm = ({ x: {
             return;
         }
 
-        axios.post("http://localhost:3001/persons", {
+        backend.createNew({
             name: newName,
             number: newNum
         })
-            .then(({ data }) => {
+            .then(data => {
                 setPersons(persons.concat(data))
                 setNewName('')
                 setNewNum('')
