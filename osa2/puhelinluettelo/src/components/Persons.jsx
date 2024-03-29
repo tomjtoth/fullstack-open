@@ -1,16 +1,26 @@
 import backend from '../services/persons'
 
-const Persons = ({ x: { persons, setPersons, filter } }) => {
+const Persons = ({ x: {
+    persons, setPersons,
+    filter,
+    setFeedback
+} }) => {
 
     const lc_filter = filter.toLowerCase();
 
     const handleDelete = (name, id) => {
 
-        if (confirm(`really delete ${name}?`))
+        if (confirm(`really delete ${name}?`)) {
             backend.deleteExisting(id)
-                .then(deletedPerson =>
-                    setPersons(persons.filter(p => p.id !== deletedPerson.id))
-                );
+                .then(deletedPerson => {
+                    setPersons(persons.filter(p => p.id !== deletedPerson.id));
+
+                    setFeedback({
+                        class: 'info',
+                        text: `deleting ${name} succeeded!`
+                    });
+                })
+        };
     }
 
     return (

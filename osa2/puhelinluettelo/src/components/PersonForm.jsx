@@ -3,7 +3,8 @@ import backend from '../services/persons'
 const PersonForm = ({ x: {
     persons, setPersons,
     newName, setNewName,
-    newNum, setNewNum
+    newNum, setNewNum,
+    setFeedback
 } }) => {
 
     const handleNameChange = (event) => {
@@ -32,6 +33,11 @@ const PersonForm = ({ x: {
                             : p
                     ))
                 )
+
+                setFeedback({
+                    class: 'info',
+                    text: `updating ${newName} succeeded!`
+                })
             }
             return;
         }
@@ -44,6 +50,11 @@ const PersonForm = ({ x: {
                 setPersons(persons.concat(data))
                 setNewName('')
                 setNewNum('')
+
+                setFeedback({
+                    class: 'info',
+                    text: `creating ${newName} succeeded!`
+                })
             })
 
     }
