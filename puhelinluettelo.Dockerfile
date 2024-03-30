@@ -17,6 +17,8 @@ COPY osa3/puhelinluettelo-backend .
 
 COPY --from=frontend /usr/src/app/dist /usr/src/app/dist
 
+RUN npm install
+
 # add the non-root user
 RUN adduser --no-create-home --disabled-password --gecos "" dummy
 
