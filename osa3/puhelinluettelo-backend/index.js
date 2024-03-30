@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan')
-var morgan = require('morgan')
+// const cors = require('cors')
 
 const persons = [
     {
@@ -31,6 +31,8 @@ let max_id = 4;
 
 //Math.max(...persons.map(({ id }) => id));
 
+// app.use(cors());
+app.use(express.static('dist'))
 app.use(express.json());
 app.use(morgan(function (tokens, req, res) {
     return [
@@ -108,7 +110,7 @@ app.delete('/api/persons/:id', (req, resp) => {
 });
 
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`);
 });

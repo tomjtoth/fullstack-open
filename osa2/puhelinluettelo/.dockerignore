@@ -1,0 +1,6 @@
+.vite
+node_modules
+.dockerignore
+.gitignore
+README.md
+vite.config.js
