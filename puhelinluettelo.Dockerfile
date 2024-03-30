@@ -7,6 +7,8 @@ COPY osa2/puhelinluettelo/ .
 RUN npm install
 RUN npm run build
 
+# changing absolute paths to relative as this is run behind my reverse proxy server
+RUN sed -i -r 's/"\/(assets|vite)/"\1/' dist/index.html
 
 
 FROM node:alpine
