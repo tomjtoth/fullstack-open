@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan')
 var morgan = require('morgan')
 
-let persons = [
+const persons = [
     {
         "name": "Arto Hellas",
         "number": "040-123456",
@@ -92,11 +93,11 @@ app.delete('/api/persons/:id', (req, resp) => {
     const wanted_id = Number(req.params.id);
     const pp = persons.findIndex(({ id }) => id === wanted_id);
 
-    if (pp >= 0) {
-        persons.splice(pp, 1);
+    if (pp >= 0)
+        return resp
+            .status(200)
+            .json(...persons.splice(pp, 1));
 
-        return resp.status(204).end();
-    }
 
     resp
         .status(404)

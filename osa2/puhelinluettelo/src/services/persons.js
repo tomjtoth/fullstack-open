@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const BASE_URL = 'http://localhost:3001/persons';
+// using relative path, because in production I'm using nginx as a reverse proxy and this is not running on '/'
+const BASE_URL = 'api/persons';
 
 const getAll = () => axios
     .get(BASE_URL)
