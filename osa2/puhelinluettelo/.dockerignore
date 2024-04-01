@@ -1,4 +1,5 @@
 .vite
+dist
 node_modules
 .dockerignore
 .gitignore
