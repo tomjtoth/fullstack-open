@@ -3,10 +3,10 @@ version: '3.8'
 services:
   puhelinluettelo:
     image: tomjtoth/puhelinluettelo
-    build: 
+    build:
       dockerfile: puhelinluettelo.Dockerfile
     environment:
-      - DB_HOST=mongo
+      - DB_HOST=${MONGO_HOST}
     networks:
       nginx:
 
@@ -14,7 +14,7 @@ services:
     image: mongo:7.0-rc
     volumes:
       - mongodb:/data/db
-    
+
 volumes:
   mongodb:
 
