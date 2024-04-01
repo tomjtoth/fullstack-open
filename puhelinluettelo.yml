@@ -6,15 +6,17 @@ services:
     build:
       dockerfile: puhelinluettelo.Dockerfile
     environment:
-      - DB_HOST=${MONGO_HOST}
+      - DB_HOST=mongo
     networks:
       nginx:
       default:
+    restart: unless-stopped
 
   mongo:
     image: mongo:7.0-rc
     volumes:
       - mongodb:/data/db
+    restart: unless-stopped
 
 volumes:
   mongodb:
