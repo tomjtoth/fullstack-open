@@ -7,8 +7,8 @@ services:
       dockerfile: puhelinluettelo.Dockerfile
     environment:
       - DB_HOST=mongo
-    ports:
-      - 3001:80
+    networks:
+      nginx:
 
   mongo:
     image: mongo:7.0-rc
@@ -17,3 +17,8 @@ services:
     
 volumes:
   mongodb:
+
+networks:
+  nginx:
+    # this actually exists on my VPS
+    external: true
