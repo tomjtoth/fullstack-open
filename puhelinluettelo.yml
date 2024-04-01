@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  puhelinluettelo:
+    image: tomjtoth/puhelinluettelo
+    build: 
+      dockerfile: puhelinluettelo.Dockerfile
+    environment:
+      - DB_HOST=mongo
+    ports:
+      - 3001:80
+
+  mongo:
+    image: mongo:7.0-rc
+    volumes:
+      - mongodb:/data/db
+    
+volumes:
+  mongodb:

@@ -8,14 +8,18 @@ const
     DB_HOST = process.env.DB_HOST
         || '127.0.0.1',
 
-    // completely change DB at any time
-    DB_URL = process.env.DB_URL
-        || printf(
-            'mongodb://fullstack:%s@%s/?%s',
-            process.env.DB_PASS,
-            DB_HOST,
-            DB_OPTS
-        );
+    DB_PASS = process.env.DB_PASS,
+
+    DB_URL = `mongodb://${DB_PASS
+        // the docker image of mongo works when I connect to it from outside of
+        // docker, but if I try to connect from another container, 
+        // the user is not found any longer.
+        // omitting auth between the 2 containers should be fine 
+        // will investigate this in the far future
+        ? `fullstack:${DB_PASS}@`
+        : ''
+        }${DB_HOST}/?${DB_OPTS}`;
+
 
 mongoose.set('strictQuery', false);
 console.log('connecting to', DB_URL)
@@ -24,6 +28,7 @@ mongoose.connect(DB_URL)
         console.log('connected to MongoDB'))
     .catch((err) =>
         console.log('error connecting to MongoDB:', err.message));
+
 
 const personSchema = new mongoose.Schema({
     name: String,
