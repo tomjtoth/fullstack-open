@@ -1,37 +1,10 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
-const morgan = require('morgan')
-// const cors = require('cors')
+const morgan = require('morgan');
+const Person = require('./models/person');
 
-const persons = [
-    {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-    },
-    {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-    }
-];
 
-// the suggested `Math.random()` makes no sense, this works like an auto-increment DB primary key...
-let max_id = 4;
-
-//Math.max(...persons.map(({ id }) => id));
-
-// app.use(cors());
 app.use(express.static('dist'))
 app.use(express.json());
 app.use(morgan(function (tokens, req, res) {
@@ -45,69 +18,85 @@ app.use(morgan(function (tokens, req, res) {
     ].join(' ')
 }));
 
-app.get('/info', (_req, resp) => {
-    resp.send(`
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${new Date().toString()}</p>
-    `);
-});
 
-app.post('/api/persons', (req, resp) => {
+app.get('/info', (_req, resp) =>
+    Person
+        .find({})
+        .then(peeps =>
+
+            resp.send(`
+            <p>Phonebook has info for ${peeps.length} people</p>
+            <p>${new Date().toString()}</p>
+        `))
+        .catch(err => next(err))
+);
+
+
+app.post('/api/persons', (req, resp, next) => {
+
     const { name, number } = req.body;
 
     if (!number)
-        return resp.status(400).json({ error: "missing number" });
+        return next(new Error("missing number"));
 
     if (!name)
-        return resp.status(400).json({ error: "missing name" });
+        return next(new Error("missing name"));
 
-    if (persons.some(p => p.name === name))
-        return resp.status(400).json({ error: "name must be unique" });
-
-    const new_peep = { name, number, id: ++max_id };
-
-    persons.push(new_peep);
-
-    resp.status(201).json(new_peep);
-});
-
-app.get('/api/persons', (_req, resp) => {
-    resp.json(persons);
-});
-
-app.get('/api/persons/:id', (req, resp) => {
-
-    const wanted_id = Number(req.params.id);
-
-    const pp = persons.find(({ id }) => id === wanted_id);
-
-    if (pp)
-        return resp.json(pp);
-
-    resp
-        .status(404)
-        .json({
-            error: `id "${wanted_id}" does not exist`
-        });
-});
-
-app.delete('/api/persons/:id', (req, resp) => {
-    const wanted_id = Number(req.params.id);
-    const pp = persons.findIndex(({ id }) => id === wanted_id);
-
-    if (pp >= 0)
-        return resp
-            .status(200)
-            .json(...persons.splice(pp, 1));
-
-
-    resp
-        .status(404)
-        .json({
-            error: `id "${wanted_id}" does not exist`
-        });
+    new Person({ name, number })
+        .save()
+        .then(x => resp.status(201).json(x))
+        .catch(err => next(err));
 
 });
+
+
+app.get('/api/persons', (_req, resp, next) =>
+    Person
+        .find({})
+        .then(people => resp.json(people))
+        .catch(err => next(err))
+);
+
+
+app.get('/api/persons/:id', (req, resp, next) =>
+    Person.findById(req.params.id)
+        .then(pp => resp.json(pp))
+        .catch(err => next(err))
+);
+
+
+app.put('/api/persons/:id', (req, resp, next) => {
+
+    const { name, number } = req.body;
+
+    Person.findByIdAndUpdate(
+        req.params.id,
+        { name, number },
+        { new: true }
+    )
+        .then(pp => resp.json(pp))
+        .catch(err => next(err))
+});
+
+
+app.delete('/api/persons/:id', (req, resp, next) =>
+    Person.findByIdAndDelete(req.params.id)
+        .then(pp => resp.status(204).end())
+        .catch(err => next(err))
+);
+
+
+app.use((err, req, resp, next) => {
+    const { message, name } = err;
+
+    if (name === 'CastError')
+        return resp.status(400).json({ error: 'malformatted id' });
+
+    if (message.match(/^missing (?:name|number)$/))
+        return resp.status(400).json(message);
+
+    next(err);
+})
 
 
 const PORT = process.env.PORT || 3001;

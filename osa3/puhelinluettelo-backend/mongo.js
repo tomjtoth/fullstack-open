@@ -5,7 +5,7 @@ if (process.argv.length < 3) {
     process.exit(1);
 }
 
-const [_node, _script_name, password, name, number] = process.argv;
+const [password, name, number] = process.argv.slice(2);
 
 // not using MongoDB Atlas, but a docker image launched via `./mongo-db.sh`
 const url =
@@ -30,6 +30,7 @@ if (name && number) {
         console.log(`added ${name} number ${number} to phonebook`);
         mongoose.connection.close()
     });
+
 } else {
     console.log("phonebook:")
     Person.find({}).then(peeps => {
