@@ -12,13 +12,15 @@ const Persons = ({ x: {
 
         if (confirm(`really delete ${name}?`)) {
             backend.deleteExisting(id)
-                .then(deletedPerson => {
-                    setPersons(persons.filter(p => p.id !== deletedPerson.id));
+                .then(status => {
+                    if (status === 204) {
+                        setPersons(persons.filter(p => p.id !== id));
 
-                    setFeedback({
-                        class: 'feedback',
-                        text: `deleting ${name} succeeded!`
-                    });
+                        setFeedback({
+                            class: 'feedback',
+                            text: `deleting ${name} succeeded!`
+                        });
+                    }
                 })
                 .catch(_ => {
                     setFeedback({

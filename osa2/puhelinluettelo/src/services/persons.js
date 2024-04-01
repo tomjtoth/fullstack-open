@@ -13,7 +13,7 @@ const createNew = (person) => axios
 
 const deleteExisting = (id) => axios
     .delete(BASE_URL + '/' + id)
-    .then(({ data }) => data);
+    .then(({ status }) => status);
 
 const updateExisting = (obj) => axios
     .put(BASE_URL + '/' + obj.id, obj)
