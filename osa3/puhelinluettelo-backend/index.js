@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
@@ -15,11 +15,11 @@ app.use(morgan(function (tokens, req, res) {
         tokens.res(req, res, 'content-length'), '-',
         tokens['response-time'](req, res), 'ms',
         JSON.stringify(req.body)
-    ].join(' ')
+    ].join(' ');
 }));
 
 
-app.get('/info', (_req, resp) =>
+app.get('/info', (_req, resp, next) =>
     Person
         .find({})
         .then(peeps =>
@@ -37,10 +37,10 @@ app.post('/api/persons', (req, resp, next) => {
     const { name, number } = req.body;
 
     if (!number)
-        return next(new Error("missing number"));
+        return next(new Error('missing number'));
 
     if (!name)
-        return next(new Error("missing name"));
+        return next(new Error('missing name'));
 
     new Person({ name, number })
         .save()
@@ -79,13 +79,13 @@ app.put('/api/persons/:id', (req, resp, next) => {
         }
     )
         .then(pp => resp.json(pp))
-        .catch(err => next(err))
+        .catch(err => next(err));
 });
 
 
 app.delete('/api/persons/:id', (req, resp, next) =>
     Person.findByIdAndDelete(req.params.id)
-        .then(_pp => resp.status(204).end())
+        .then(() => resp.status(204).end())
         .catch(err => next(err))
 );
 

@@ -26,18 +26,18 @@ if (name && number) {
     new Person({
         name,
         number
-    }).save().then((res) => {
+    }).save().then(() => {
         console.log(`added ${name} number ${number} to phonebook`);
-        mongoose.connection.close()
+        mongoose.connection.close();
     });
 
 } else {
-    console.log("phonebook:")
+    console.log('phonebook:');
     Person.find({}).then(peeps => {
 
         peeps.forEach(({ name, number }) =>
-            console.log(`${name} ${number}`))
+            console.log(`${name} ${number}`));
 
-        mongoose.connection.close()
+        mongoose.connection.close();
     });
 }

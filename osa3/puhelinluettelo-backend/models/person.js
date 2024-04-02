@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const
-    DB_OPTS = "retryWrites=true&w=majority",
+    DB_OPTS = 'retryWrites=true&w=majority',
 
     // docker-compose vs local development
     DB_HOST = process.env.DB_HOST
@@ -11,9 +11,9 @@ const
 
     DB_URL = `mongodb://${DB_PASS
         // the docker image of mongo works when I connect to it from outside of
-        // docker, but if I try to connect from another container, 
+        // docker, but if I try to connect from another container,
         // the user is not found any longer.
-        // omitting auth between the 2 containers should be fine 
+        // omitting auth between the 2 containers should be fine
         // will investigate this in the far future
         ? `fullstack:${DB_PASS}@`
         : ''
@@ -21,9 +21,9 @@ const
 
 
 mongoose.set('strictQuery', false);
-console.log('connecting to', DB_URL)
+console.log('connecting to', DB_URL);
 mongoose.connect(DB_URL)
-    .then(_res =>
+    .then(() =>
         console.log('connected to MongoDB'))
     .catch((err) =>
         console.log('error connecting to MongoDB:', err.message));
@@ -39,20 +39,20 @@ const personSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function (v) {
-                return /^(:?\d{2}-\d{6,}|\d{3}-\d{5,})$/.test(v)
+                return /^(:?\d{2}-\d{6,}|\d{3}-\d{5,})$/.test(v);
             },
             message: props => `${props.value} is not a valid phone number!`
         },
         required: [true, 'User phone number required']
     }
-})
+});
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
     }
-})
+});
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = mongoose.model('Person', personSchema);
