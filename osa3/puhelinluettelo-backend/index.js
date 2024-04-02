@@ -81,12 +81,12 @@ app.put('/api/persons/:id', (req, resp, next) => {
 
 app.delete('/api/persons/:id', (req, resp, next) =>
     Person.findByIdAndDelete(req.params.id)
-        .then(pp => resp.status(204).end())
+        .then(_pp => resp.status(204).end())
         .catch(err => next(err))
 );
 
 
-app.use((err, req, resp, next) => {
+app.use((err, _req, resp, next) => {
     const { message, name } = err;
 
     if (name === 'CastError')
@@ -94,6 +94,10 @@ app.use((err, req, resp, next) => {
 
     if (message.match(/^missing (?:name|number)$/))
         return resp.status(400).json(message);
+
+    if (name === 'ValidationError')
+        return resp.status(400).json({ error: message });
+
 
     next(err);
 })

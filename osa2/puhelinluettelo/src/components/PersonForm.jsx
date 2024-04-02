@@ -62,6 +62,12 @@ const PersonForm = ({ x: {
                     text: `creating ${newName} succeeded!`
                 })
             })
+            .catch(({ response: { data: { error } } }) => {
+                setFeedback({
+                    class: 'feedback error',
+                    text: error
+                })
+            })
 
     }
 
