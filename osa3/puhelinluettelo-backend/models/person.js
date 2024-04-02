@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const printf = require('printf');
 
 const
     DB_OPTS = "retryWrites=true&w=majority",
