@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const Person = require('./models/person');
 
 
-app.use(express.static('dist'))
+app.use(express.static('dist'));
 app.use(express.json());
 app.use(morgan(function (tokens, req, res) {
     return [
@@ -72,7 +72,11 @@ app.put('/api/persons/:id', (req, resp, next) => {
     Person.findByIdAndUpdate(
         req.params.id,
         { name, number },
-        { new: true }
+        {
+            new: true,
+            runValidators: true,
+            context: 'query'
+        }
     )
         .then(pp => resp.json(pp))
         .catch(err => next(err))
@@ -100,7 +104,7 @@ app.use((err, _req, resp, next) => {
 
 
     next(err);
-})
+});
 
 
 const PORT = process.env.PORT || 3001;

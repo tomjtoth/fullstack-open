@@ -26,23 +26,23 @@ const PersonForm = ({ x: {
                 backend.updateExisting({
                     ...persons.find(({ name }) => name === newName),
                     number: newNum
-                }).then(updatedPerson =>
+                }).then(updatedPerson => {
                     setPersons(persons.map(p =>
                         p.id === updatedPerson.id
                             ? updatedPerson
                             : p
                     ))
-                ).catch(_ => {
-                    setFeedback({
-                        class: 'error',
-                        text: `${newName} was already deleted`
-                    });
-                    setPersons(persons.filter(p => p.id !== id));
-                })
 
-                setFeedback({
-                    class: 'feedback',
-                    text: `updating ${newName} succeeded!`
+                    setFeedback({
+                        class: 'feedback',
+                        text: `updating ${newName} succeeded!`
+                    })
+
+                }).catch(({ response: { data: { error } } }) => {
+                    setFeedback({
+                        class: 'feedback error',
+                        text: error
+                    })
                 })
             }
             return;
