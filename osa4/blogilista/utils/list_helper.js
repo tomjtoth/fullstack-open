@@ -13,4 +13,28 @@ const favoriteBlog = (blogs) => {
     return blogs.filter(({ likes }) => likes === max_likes);
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = (blogs) => {
+    const authors = {};
+    let most_publications = 0;
+
+    blogs.forEach(({ author }) => {
+
+        // eslint-disable-next-line no-prototype-builtins
+        if (!authors.hasOwnProperty(author))
+            authors[author] = 0;
+
+        // TiRa
+        if (++authors[author] > most_publications)
+            most_publications++;
+    });
+
+    return Array.from(Object.entries(authors))
+        // eslint-disable-next-line no-unused-vars
+        .filter(([_author, publications]) =>
+            publications === most_publications)
+        .map(([author, blogs]) => {
+            return { author, blogs };
+        });
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
