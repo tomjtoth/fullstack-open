@@ -1,0 +1,50 @@
+### create new
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "abc",
+    "author": "xyz",
+    "url": "www",
+    "likes": 10
+}
+
+### missing 1/4 fields should fail with 400
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "author": "xyz",
+    "url": "www",
+    "likes": 10
+}
+
+### missing 1/4 fields should fail with 400
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "abc",
+    "url": "www",
+    "likes": 10
+}
+
+### missing 1/4 fields should fail with 400
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "abc",
+    "author": "xyz",
+    "likes": 10
+}
+
+### missing 1/4 fields should fail with 400
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "abc",
+    "author": "xyz",
+    "url": "www"
+}
