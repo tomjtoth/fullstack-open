@@ -11,8 +11,8 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - `git checkout da34e8f09ae3bbd7d1c84ad264242a5f98af46ca`
     - tehtävä 2.20 skipattu
 
-- [osa 3](https://github.com/tomjtoth/fullstack-open/tree/b489014cddf8a8d8890b9903566e4b8c62476691)
-    - `git checkout b489014cddf8a8d8890b9903566e4b8c62476691`
+- [osa 3](https://github.com/tomjtoth/fullstack-open/tree/c7444d421ab33108ba07dffef60a107c2e9f1829)
+    - `git checkout c7444d421ab33108ba07dffef60a107c2e9f1829`
     - puhelinluetteo deplattu [tänne](https://apps.ttj.hu/puhelinluettelo)
         - pyörii Docker:ssa toisen container:in (nginx reverse proxy) takana
         - päivitykset hoitaa watchtower
