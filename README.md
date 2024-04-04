@@ -19,3 +19,8 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - 3.12:stä eteenpäin käytän paikallisen mongo docker containerin, laita päälle [näin](./osa3/puhelinluettelo-backend/mongo-db.sh)
     - docker compose:in sisällä (kahden containerin välillä) en käytä mongoDB:n auth:ia, koska se käyttäytyy omituisesti
         - lue kommentti [tässä](./osa3/puhelinluettelo-backend/models/person.js)
+
+- [osa 4]()
+    - `git checkout `
+        - tehtävä `4.1`: jälleen menin mongo-db:n docker kuvakkeella joka on etukäteen käynnistettävä kuten osassa 3
+    - tehtävät `4.{4-7}` palauttaa KAIKEN kriteeria tyydyttävää ehdokasta

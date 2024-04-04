@@ -1,6 +1,12 @@
 const { test, describe } = require('node:test');
 const { strictEqual, deepStrictEqual } = require('node:assert');
-const { dummy, totalLikes, favoriteBlog, mostBlogs } = require('../utils/list_helper');
+const {
+    dummy,
+    totalLikes,
+    favoriteBlog,
+    mostBlogs,
+    mostLikes
+} = require('../utils/list_helper');
 
 const WEIRD_MD_URL_ARRAY =
     [{
@@ -155,6 +161,38 @@ describe('assignments 4.5+', () => {
             {
                 author: WEIRD_MD_URL_ARRAY[3].author,
                 blogs: 3
+            }
+        ]);
+    });
+
+    test('return correct author with mostLikes', () => {
+        deepStrictEqual(mostLikes(WEIRD_MD_URL_ARRAY), [{
+            author: WEIRD_MD_URL_ARRAY[2].author,
+            likes: 17
+        }]);
+    });
+
+
+    test('mostLikes of empty list is []', () => {
+        deepStrictEqual(mostBlogs([]), []);
+    });
+
+
+    test('mostLikes reutrns both top-authors', () => {
+
+        const modified = [...WEIRD_MD_URL_ARRAY, {
+            ...WEIRD_MD_URL_ARRAY[0],
+            likes: 10
+        }];
+
+        deepStrictEqual(mostLikes(modified), [
+            {
+                author: WEIRD_MD_URL_ARRAY[0].author,
+                likes: 17
+            },
+            {
+                author: WEIRD_MD_URL_ARRAY[2].author,
+                likes: 17
             }
         ]);
     });
