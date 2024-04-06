@@ -1,4 +1,4 @@
-const { strictEqual, deepStrictEqual } = require('node:assert');
+const { notEqual, strictEqual, deepStrictEqual } = require('node:assert');
 const { test, beforeEach, after, describe } = require('node:test');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
@@ -168,8 +168,21 @@ describe('actual DB queries involved in tests', () => {
         strictEqual(blogs.body.length, initialBlogs.length);
     });
 
-});
 
-after(async () => {
-    await mongoose.connection.close();
+    test('id property is present on blogs', async () => {
+        const { body: [{ id, _id }] } = await api
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        // it's enough to check the 1st blog
+        notEqual(id, undefined);
+        strictEqual(_id, undefined);
+    });
+
+
+    after(async () => {
+        await mongoose.connection.close();
+    });
+
 });
