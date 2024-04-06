@@ -17,6 +17,11 @@ const
     DB_PASS
         = process.env.DB_PASS,
 
+    DB_NAME
+        = process.env.NODE_ENV === 'test'
+            ? 'test'
+            : '',
+
     MONGODB_URI
         = `mongodb://${DB_PASS
             // the docker image of mongo works when I connect to it from outside of
@@ -26,7 +31,7 @@ const
             // will investigate this in the far future
             ? `fullstack:${DB_PASS}@`
             : ''
-        }${DB_HOST}/?${DB_OPTS}`;
+        }${DB_HOST}/${DB_NAME}?${DB_OPTS}`;
 
 
 module.exports = { MONGODB_URI, PORT };

@@ -1,5 +1,7 @@
-const { test, describe } = require('node:test');
 const { strictEqual, deepStrictEqual } = require('node:assert');
+const { test, beforeEach, after, describe } = require('node:test');
+const mongoose = require('mongoose');
+const supertest = require('supertest');
 const {
     dummy,
     totalLikes,
@@ -7,56 +9,9 @@ const {
     mostBlogs,
     mostLikes
 } = require('../utils/list_helper');
+const api = supertest(require('../app'));
+const { initialBlogs, populateDb } = require('./test_helper');
 
-const WEIRD_MD_URL_ARRAY =
-    [{
-        _id: '5a422a851b54a676234d17f7',
-        title: 'React patterns',
-        author: 'Michael Chan',
-        url: 'https://reactpatterns.com/',
-        likes: 7,
-        __v: 0
-    },
-    {
-        _id: '5a422aa71b54a676234d17f8',
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-        likes: 5,
-        __v: 0
-    },
-    {
-        _id: '5a422b3a1b54a676234d17f9',
-        title: 'Canonical string reduction',
-        author: 'Edsger W. Dijkstra',
-        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-        likes: 12,
-        __v: 0
-    },
-    {
-        _id: '5a422b891b54a676234d17fa',
-        title: 'First class tests',
-        author: 'Robert C. Martin',
-        url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-        likes: 10,
-        __v: 0
-    },
-    {
-        _id: '5a422ba71b54a676234d17fb',
-        title: 'TDD harms architecture',
-        author: 'Robert C. Martin',
-        url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-        likes: 0,
-        __v: 0
-    },
-    {
-        _id: '5a422bc61b54a676234d17fc',
-        title: 'Type wars',
-        author: 'Robert C. Martin',
-        url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-        likes: 2,
-        __v: 0
-    }];
 
 test('dummy returns one', () => {
     const blogs = [];
@@ -98,7 +53,7 @@ describe('total likes', () => {
     });
 
     test('array from weird .md URL returns 36', () => {
-        strictEqual(totalLikes(WEIRD_MD_URL_ARRAY), 36);
+        strictEqual(totalLikes(initialBlogs), 36);
     });
 
 });
@@ -116,30 +71,30 @@ describe('assignments 4.5+', () => {
 
 
     test('larger array works fine with 1 top-liked element', () => {
-        deepStrictEqual(favoriteBlog(WEIRD_MD_URL_ARRAY), [WEIRD_MD_URL_ARRAY[2]]);
+        deepStrictEqual(favoriteBlog(initialBlogs), [initialBlogs[2]]);
     });
 
     test('larger array works fine with 4 top-liked element', () => {
 
-        const injected = [...WEIRD_MD_URL_ARRAY];
+        const injected = [...initialBlogs];
 
         injected.splice(2, 0,
-            WEIRD_MD_URL_ARRAY[2],
-            WEIRD_MD_URL_ARRAY[2],
-            WEIRD_MD_URL_ARRAY[2]
+            initialBlogs[2],
+            initialBlogs[2],
+            initialBlogs[2]
         );
 
         deepStrictEqual(favoriteBlog(injected), [
-            WEIRD_MD_URL_ARRAY[2],
-            WEIRD_MD_URL_ARRAY[2],
-            WEIRD_MD_URL_ARRAY[2],
-            WEIRD_MD_URL_ARRAY[2]
+            initialBlogs[2],
+            initialBlogs[2],
+            initialBlogs[2],
+            initialBlogs[2]
         ]);
     });
 
     test('return most popular author', () => {
-        deepStrictEqual(mostBlogs(WEIRD_MD_URL_ARRAY), [{
-            author: WEIRD_MD_URL_ARRAY[3].author,
+        deepStrictEqual(mostBlogs(initialBlogs), [{
+            author: initialBlogs[3].author,
             blogs: 3
         }]);
     });
@@ -151,23 +106,23 @@ describe('assignments 4.5+', () => {
 
     test('mostBlogs reutrns both top-authors', () => {
 
-        const modified = [...WEIRD_MD_URL_ARRAY, WEIRD_MD_URL_ARRAY[2]];
+        const modified = [...initialBlogs, initialBlogs[2]];
 
         deepStrictEqual(mostBlogs(modified), [
             {
-                author: WEIRD_MD_URL_ARRAY[2].author,
+                author: initialBlogs[2].author,
                 blogs: 3
             },
             {
-                author: WEIRD_MD_URL_ARRAY[3].author,
+                author: initialBlogs[3].author,
                 blogs: 3
             }
         ]);
     });
 
     test('return correct author with mostLikes', () => {
-        deepStrictEqual(mostLikes(WEIRD_MD_URL_ARRAY), [{
-            author: WEIRD_MD_URL_ARRAY[2].author,
+        deepStrictEqual(mostLikes(initialBlogs), [{
+            author: initialBlogs[2].author,
             likes: 17
         }]);
     });
@@ -180,21 +135,41 @@ describe('assignments 4.5+', () => {
 
     test('mostLikes reutrns both top-authors', () => {
 
-        const modified = [...WEIRD_MD_URL_ARRAY, {
-            ...WEIRD_MD_URL_ARRAY[0],
+        const modified = [...initialBlogs, {
+            ...initialBlogs[0],
             likes: 10
         }];
 
         deepStrictEqual(mostLikes(modified), [
             {
-                author: WEIRD_MD_URL_ARRAY[0].author,
+                author: initialBlogs[0].author,
                 likes: 17
             },
             {
-                author: WEIRD_MD_URL_ARRAY[2].author,
+                author: initialBlogs[2].author,
                 likes: 17
             }
         ]);
     });
 
+});
+
+describe('actual DB queries involved in tests', () => {
+
+    beforeEach(populateDb);
+
+
+    test('right amount of blogs are returned as json', async () => {
+        const blogs = await api
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        strictEqual(blogs.body.length, initialBlogs.length);
+    });
+
+});
+
+after(async () => {
+    await mongoose.connection.close();
 });
