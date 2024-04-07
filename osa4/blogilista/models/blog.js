@@ -1,9 +1,18 @@
 const { model, Schema } = require('mongoose');
 
 const blogSchema = new Schema({
-    title: String,
-    author: String,
-    url: String,
+    title: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    },
     likes: Number
 });
 

@@ -51,6 +51,22 @@ const initialBlogs = [
     }
 ];
 
+const BLOG_FIELD_PRESETS = [
+    ['author', 'aaa'],
+    ['title', 'bbb'],
+    ['url', 'ccc'],
+    ['likes', 123]
+];
+
+// requested_fields is a 4-bit number
+const dummyBlog = (requested_fields) => {
+    return Object.fromEntries(BLOG_FIELD_PRESETS
+        .filter(
+            (pair, idx) =>
+                requested_fields & Math.pow(2, idx)
+        ));
+};
+
 const populateDb = async () => {
     await Blog.deleteMany({});
     await Blog.insertMany(initialBlogs);
@@ -61,4 +77,4 @@ const blogsInDb = async () => {
     return notes.map(blog => blog.toJSON());
 };
 
-module.exports = { initialBlogs, populateDb, blogsInDb };
+module.exports = { initialBlogs, populateDb, blogsInDb, dummyBlog, BLOG_FIELD_PRESETS };
