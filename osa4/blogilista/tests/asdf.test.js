@@ -260,6 +260,31 @@ describe('tests involving actual DB queries', () => {
     });
 
 
+    test('PUT => HTTP 204 upon success', async () => {
+        const updated_id = initialBlogs[0]._id;
+
+        await api
+            .put(`/api/blogs/${updated_id}`)
+            .send({ likes: 999 })
+            .expect(204);
+
+        strictEqual(
+            (await blogsInDb())
+                .find(({ id }) => id === updated_id)
+                .likes,
+            999
+        );
+    });
+
+
+    test('PUT => HTTP 400 upon failure', async () => {
+        await api
+            .put('/api/blogs/omena')
+            .send({ likes: 999 })
+            .expect(400);
+    });
+
+
     after(async () => {
         await mongoose.connection.close();
     });

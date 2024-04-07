@@ -27,4 +27,18 @@ router.delete('/:id', async ({ params: { id } }, resp) => {
 });
 
 
+router.put('/:id', async ({ params: { id }, body: { likes } }, resp) => {
+    await Blog.updateOne(
+        { _id: id },
+        { likes },
+        {
+            runValidators: true,
+            context: 'query'
+        }
+    );
+
+    resp.status(204).end();
+});
+
+
 module.exports = router;
