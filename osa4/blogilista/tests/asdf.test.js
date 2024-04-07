@@ -188,12 +188,7 @@ describe('actual DB queries involved in tests', () => {
 
 
     test('can POST +1 blog', async () => {
-        const new_blog = {
-            title: 'aaa',
-            author: 'bbb',
-            url: 'ccc',
-            likes: 123
-        };
+        const new_blog = dummyBlog(0b1111);
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
@@ -209,11 +204,7 @@ describe('actual DB queries involved in tests', () => {
 
 
     test('new blog defaults to likes=0 if missing', async () => {
-        const new_blog = {
-            title: 'aaa',
-            author: 'bbb',
-            url: 'ccc',
-        };
+        const new_blog = dummyBlog(0b111);
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
