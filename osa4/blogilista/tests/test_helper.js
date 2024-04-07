@@ -56,4 +56,9 @@ const populateDb = async () => {
     await Blog.insertMany(initialBlogs);
 };
 
-module.exports = { initialBlogs, populateDb };
+const blogsInDb = async () => {
+    const notes = await Blog.find({});
+    return notes.map(blog => blog.toJSON());
+};
+
+module.exports = { initialBlogs, populateDb, blogsInDb };

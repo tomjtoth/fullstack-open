@@ -10,7 +10,7 @@ const {
     mostLikes
 } = require('../utils/list_helper');
 const api = supertest(require('../app'));
-const { initialBlogs, populateDb } = require('./test_helper');
+const { initialBlogs, populateDb, blogsInDb } = require('./test_helper');
 
 
 test('dummy returns one', () => {
