@@ -202,6 +202,28 @@ describe('actual DB queries involved in tests', () => {
     });
 
 
+    test('new blog defaults to likes=0 if missing', async () => {
+        const new_blog = {
+            title: 'aaa',
+            author: 'bbb',
+            url: 'ccc',
+        };
+
+        const { body: saved_blog } = await api
+            .post('/api/blogs')
+            .send(new_blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
+
+        deepStrictEqual({
+            ...new_blog,
+            id: saved_blog.id,
+            likes: 0
+        }, saved_blog);
+
+    });
+
+
     after(async () => {
         await mongoose.connection.close();
     });
