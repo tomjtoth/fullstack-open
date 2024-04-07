@@ -20,4 +20,11 @@ router.post('/', async ({ body }, resp) => {
 });
 
 
+router.delete('/:id', async ({ params: { id } }, resp) => {
+    await Blog.deleteOne({ _id: id });
+
+    resp.status(204).end();
+});
+
+
 module.exports = router;

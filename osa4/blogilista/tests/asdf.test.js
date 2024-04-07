@@ -233,6 +233,33 @@ describe('tests involving actual DB queries', () => {
         }
     });
 
+    test('DELETE => HTTP 204 upon success', async () => {
+        const deleted_id = initialBlogs[0]._id;
+
+        await api
+            .delete(`/api/blogs/${deleted_id}`)
+            .expect(204);
+
+        strictEqual(
+            (await blogsInDb())
+                .find(({ id }) => id === deleted_id),
+            undefined
+        );
+    });
+
+
+    test('DELETE => HTTP 400 upon failure', async () => {
+        await api
+            .delete('/api/blogs/omena')
+            .expect(400);
+
+        strictEqual(
+            (await blogsInDb()).length,
+            initialBlogs.length
+        );
+    });
+
+
     after(async () => {
         await mongoose.connection.close();
     });
