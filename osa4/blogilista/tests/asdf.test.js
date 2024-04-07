@@ -19,14 +19,14 @@ const {
 } = require('./test_helper');
 
 
-test('dummy returns one', () => {
+test('dummy(blogs) => 1', () => {
     const blogs = [];
 
     const result = dummy(blogs);
     strictEqual(result, 1);
 });
 
-describe('total likes', () => {
+describe('totalLikes', () => {
 
     test('empty array returns 0', () => {
         strictEqual(totalLikes([]), 0);
@@ -34,20 +34,11 @@ describe('total likes', () => {
 
     test('array of 1 blog equals 1st elements\' likes', () => {
         strictEqual(
-            totalLikes([
-                {
-                    _id: '5a422aa71b54a676234d17f8',
-                    title: 'Go To Statement Considered Harmful',
-                    author: 'Edsger W. Dijkstra',
-                    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-                    likes: 5,
-                    __v: 0
-                }
-            ]), 5
+            totalLikes([initialBlogs[0]]), initialBlogs[0].likes
         );
     });
 
-    test('3+4+5 == 12', () => {
+    test('3+4+5 likes == 12 likes', () => {
         strictEqual(
             totalLikes([
                 // we only care about likes, YoLo
@@ -58,13 +49,14 @@ describe('total likes', () => {
         );
     });
 
-    test('array from weird .md URL returns 36', () => {
+    test('totalLikes(initialBlogs) => 36', () => {
         strictEqual(totalLikes(initialBlogs), 36);
     });
 
 });
 
-describe('assignments 4.5+', () => {
+describe('favoriteBlog', () => {
+
     test('empty array\'s favorite is an empty array', () => {
         deepStrictEqual(favoriteBlog([]), []);
     });
@@ -75,12 +67,11 @@ describe('assignments 4.5+', () => {
         deepStrictEqual(favoriteBlog(arr), arr);
     });
 
-
     test('larger array works fine with 1 top-liked element', () => {
         deepStrictEqual(favoriteBlog(initialBlogs), [initialBlogs[2]]);
     });
 
-    test('larger array works fine with 4 top-liked element', () => {
+    test('larger array works fine with more top-liked element', () => {
 
         const injected = [...initialBlogs];
 
@@ -98,6 +89,10 @@ describe('assignments 4.5+', () => {
         ]);
     });
 
+});
+
+describe('mostBlogs', () => {
+
     test('return most popular author', () => {
         deepStrictEqual(mostBlogs(initialBlogs), [{
             author: initialBlogs[3].author,
@@ -110,7 +105,7 @@ describe('assignments 4.5+', () => {
     });
 
 
-    test('mostBlogs reutrns both top-authors', () => {
+    test('returns both top-authors', () => {
 
         const modified = [...initialBlogs, initialBlogs[2]];
 
@@ -126,6 +121,10 @@ describe('assignments 4.5+', () => {
         ]);
     });
 
+});
+
+describe('mostLikes', () => {
+
     test('return correct author with mostLikes', () => {
         deepStrictEqual(mostLikes(initialBlogs), [{
             author: initialBlogs[2].author,
@@ -133,11 +132,9 @@ describe('assignments 4.5+', () => {
         }]);
     });
 
-
     test('mostLikes of empty list is []', () => {
-        deepStrictEqual(mostBlogs([]), []);
+        deepStrictEqual(mostLikes([]), []);
     });
-
 
     test('mostLikes reutrns both top-authors', () => {
 
@@ -160,10 +157,9 @@ describe('assignments 4.5+', () => {
 
 });
 
-describe('actual DB queries involved in tests', () => {
+describe('tests involving actual DB queries', () => {
 
     beforeEach(populateDb);
-
 
     test('right amount of blogs are returned as json', async () => {
         const blogs = await api
@@ -173,7 +169,6 @@ describe('actual DB queries involved in tests', () => {
 
         strictEqual(blogs.body.length, initialBlogs.length);
     });
-
 
     test('id property is present on blogs', async () => {
         const { body: [{ id, _id }] } = await api
@@ -186,9 +181,8 @@ describe('actual DB queries involved in tests', () => {
         strictEqual(_id, undefined);
     });
 
-
-    test('can POST +1 blog', async () => {
-        const new_blog = dummyBlog(0b1111);
+    test('POST /api/blogs returns blog w/ correct contents', async () => {
+        const new_blog = dummyBlog();
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
@@ -202,8 +196,7 @@ describe('actual DB queries involved in tests', () => {
         strictEqual(blogs_now.length, initialBlogs.length + 1);
     });
 
-
-    test('new blog defaults to likes=0 if missing', async () => {
+    test('`likes` defaults to 0 if undefined', async () => {
         const new_blog = dummyBlog(0b111);
 
         const { body: saved_blog } = await api
@@ -220,8 +213,7 @@ describe('actual DB queries involved in tests', () => {
 
     });
 
-
-    test('missing author/title/url field results in HTTP400', async () => {
+    test('POST => HTTP400 if missing author/title/url fields', async () => {
         for (const missing_field of [0, 1, 2]) {
 
             const
@@ -240,7 +232,6 @@ describe('actual DB queries involved in tests', () => {
             strictEqual(error, expected_error);
         }
     });
-
 
     after(async () => {
         await mongoose.connection.close();
