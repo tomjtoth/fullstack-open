@@ -58,11 +58,15 @@ const BLOG_FIELD_PRESETS = [
     ['likes', 123]
 ];
 
-// requested_fields is a 4-bit number
-const dummyBlog = (requested_fields) => {
+/**
+ * generate object for Blog using `BLOG_FIELD_PRESETS`
+ * @param {int4} requested_fields 4-bit number, bits representing indices of fields to include
+ * @returns object representing a blog with up to 4 defined fields
+ */
+const dummyBlog = (requested_fields = 0b1111) => {
     return Object.fromEntries(BLOG_FIELD_PRESETS
         .filter(
-            (pair, idx) =>
+            (_key_val_pair, idx) =>
                 requested_fields & Math.pow(2, idx)
         ));
 };
