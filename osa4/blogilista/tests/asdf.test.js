@@ -181,6 +181,27 @@ describe('actual DB queries involved in tests', () => {
     });
 
 
+    test('can POST +1 blog', async () => {
+        const new_blog = {
+            title: 'aaa',
+            author: 'bbb',
+            url: 'ccc',
+            likes: 123
+        };
+
+        const { body: saved_blog } = await api
+            .post('/api/blogs')
+            .send(new_blog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
+
+        deepStrictEqual({ ...new_blog, id: saved_blog.id }, saved_blog);
+
+        const blogs_now = await blogsInDb();
+        strictEqual(blogs_now.length, initialBlogs.length + 1);
+    });
+
+
     after(async () => {
         await mongoose.connection.close();
     });
