@@ -9,7 +9,8 @@ const loginRoutes = require('./controllers/login');
 const {
     requestLogger,
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    tokenExtractor
 } = require('./utils/middleware');
 const log = require('./utils/logger');
 const mongoose = require('mongoose');
@@ -31,6 +32,7 @@ app.use(cors());
 app.use(express.static('dist'));
 app.use(express.json());
 
+app.use(tokenExtractor);
 app.use(requestLogger);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
