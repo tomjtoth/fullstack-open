@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const blogRoutes = require('./controllers/blogs');
 const userRoutes = require('./controllers/users');
+const loginRoutes = require('./controllers/login');
 const {
     requestLogger,
     unknownEndpoint,
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use(requestLogger);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/login', loginRoutes);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
