@@ -60,8 +60,6 @@ content-type: application/json
     "password": "aaa"
 }
 
-
-
 ### login as root:toor
 POST http://localhost:3001/api/login
 content-type: application/json
@@ -69,4 +67,13 @@ content-type: application/json
 {
     "username": "root",
     "password": "toor"
+}
+
+### login as aaa:aaa
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+    "username": "aaa",
+    "password": "aaa"
 }
