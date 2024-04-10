@@ -1,20 +1,5 @@
 const router = require('express').Router();
-const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
-const User = require('../models/user');
-
-
-const getUserFromToken = async (token, next) => {
-    const { id: uid = null } = jwt.verify(token, process.env.SECRET);
-
-    if (!uid)
-        return next({
-            name: 'AuthErr',
-            message: 'invalid token'
-        });
-
-    return await User.findById(uid);
-};
 
 
 router.get('/', async (_req, resp) => {
@@ -26,9 +11,13 @@ router.get('/', async (_req, resp) => {
 });
 
 
-router.post('/', async ({ token, body }, resp, next) => {
+router.post('/', async ({ body, user = null }, resp, next) => {
 
-    const user = getUserFromToken(token, next);
+    if (!user)
+        return next({
+            name: 'AuthErr',
+            message: 'must be signed in to create new blogs'
+        });
 
     const new_blog = new Blog({
         ...body,
@@ -46,8 +35,13 @@ router.post('/', async ({ token, body }, resp, next) => {
 });
 
 
-router.delete('/:id', async ({ params: { id }, token }, resp, next) => {
-    const user = await getUserFromToken(token, next);
+router.delete('/:id', async ({ params: { id }, user = null }, resp, next) => {
+
+    if (!user)
+        return next({
+            name: 'AuthErr',
+            message: 'must be signed in to delete blogs'
+        });
 
     const blog = await Blog.findById(id);
 

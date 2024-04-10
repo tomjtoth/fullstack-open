@@ -10,7 +10,8 @@ const {
     requestLogger,
     unknownEndpoint,
     errorHandler,
-    tokenExtractor
+    tokenExtractor,
+    userExtractor
 } = require('./utils/middleware');
 const log = require('./utils/logger');
 const mongoose = require('mongoose');
@@ -33,6 +34,12 @@ app.use(express.static('dist'));
 app.use(express.json());
 
 app.use(tokenExtractor);
+// kurssimateriaalissa toi on muuten huonosti opastettu, koska GET /api/blogs halutaan kirjautumattakin näyttää, ei muuten kukaan lukisi niitä...
+
+// use the middleware only in /api/blogs routes
+// app.use('/api/blogs', userExtractor, blogsRouter)
+
+app.use(userExtractor);
 app.use(requestLogger);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
