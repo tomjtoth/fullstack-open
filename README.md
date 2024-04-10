@@ -20,8 +20,8 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - docker compose:in sisällä (kahden containerin välillä) en käytä mongoDB:n auth:ia, koska se käyttäytyy omituisesti
         - lue kommentti [tässä](./osa3/puhelinluettelo-backend/models/person.js)
 
-- [osa 4]()
-    - `git checkout `
+- [osa 4](https://github.com/tomjtoth/fullstack-open/tree/e91479ece9fcc9a32675d1a63c2e920c6acc3699)
+    - `git checkout e91479ece9fcc9a32675d1a63c2e920c6acc3699`
         - tehtävä `4.1`: jälleen menin mongo-db:n docker kuvakkeella joka on etukäteen käynnistettävä kuten osassa 3
     - tehtävät `4.{4-7}` palauttaa KAIKEN kriteeria tyydyttävää ehdokasta
     - piti luoda käyttajätunnusta toiselle tietokannalle docker:ssa: `db.createUser({ user: "fullstack", pwd: passwordPrompt(), roles: [ { role: "readWrite", db: "test" } ] })`
