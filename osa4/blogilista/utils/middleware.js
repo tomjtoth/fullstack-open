@@ -19,6 +19,12 @@ const errorHandler = (error, _req, resp, next) => {
         return resp.status(400).send({ error: 'malformatted id' });
     } else if (error.name === 'ValidationError') {
         return resp.status(400).json({ error: error.message });
+    } else if (
+        error.name === 'MongoServerError'
+        &&
+        error.message.includes('E11000 duplicate key error')
+    ) {
+        return resp.status(400).json({ error: 'expected `username` to be unique' });
     }
 
     next(error);

@@ -1,31 +1,31 @@
 const { model, Schema } = require('mongoose');
 
-const blogSchema = new Schema({
-    title: {
+const schema = new Schema({
+    name: String,
+    username: {
+        type: String,
+        required: true,
+        minlength: 3,
+        unique: true
+    },
+    passwordHash: {
         type: String,
         required: true
     },
-    author: {
-        type: String,
-        required: true
-    },
-    url: {
-        type: String,
-        required: true
-    },
-    likes: Number,
-    user: {
+    blogs: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
+        ref: 'Blog'
+    }],
+
 });
 
-blogSchema.set('toJSON', {
+schema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
         delete returnedObject.__v;
+        delete returnedObject.passwordHash;
     }
 });
 
-module.exports = model('Blog', blogSchema);
+module.exports = model('User', schema);

@@ -3,7 +3,8 @@ const express = require('express');
 require('express-async-errors');
 const app = express();
 const cors = require('cors');
-const router = require('./controllers/blogs');
+const blogRoutes = require('./controllers/blogs');
+const userRoutes = require('./controllers/users');
 const {
     requestLogger,
     unknownEndpoint,
@@ -30,7 +31,8 @@ app.use(express.static('dist'));
 app.use(express.json());
 
 app.use(requestLogger);
-app.use('/api/blogs', router);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/users', userRoutes);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
