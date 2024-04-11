@@ -21,13 +21,14 @@ const App = () => {
     if (json) {
       const user = JSON.parse(json)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
 
   return (<>
     {user
-      ? <BlogForm x={{ blogs, user, setUser }} />
+      ? <BlogForm x={{ blogs, setBlogs, user, setUser }} />
       : <LoginForm x={{
         username, setUsername,
         password, setPassword,

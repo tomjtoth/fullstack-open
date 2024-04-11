@@ -1,20 +1,20 @@
 import Blog from './Blog'
+import BlogCreationForm from './BlogCreationform'
+import UserInfo from './UserInfo'
 
-const BlogForm = ({ x: { blogs, user, setUser } }) => {
+const BlogForm = ({ x: { blogs, setBlogs, user, setUser } }) => (
+    <div>
+        <h2>blogs</h2>
 
-    return (
-        <div>
-            <h2>blogs</h2>
-            <p>{user.name} logged in</p>
-            <button onClick={() => {
-                setUser(null)
-                localStorage.removeItem('user')
-            }}>logout</button>
-            {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
-            )}
-        </div>
-    )
-}
+        <UserInfo x={{ user, setUser }} />
+
+        <BlogCreationForm x={{ blogs, setBlogs }} />
+
+        {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+        )}
+    </div>
+)
+
 
 export default BlogForm
