@@ -26,3 +26,8 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - tehtävät `4.{4-7}` palauttaa KAIKEN kriteeria tyydyttävää ehdokasta
     - piti luoda käyttajätunnusta toiselle tietokannalle docker:ssa: `db.createUser({ user: "fullstack", pwd: passwordPrompt(), roles: [ { role: "readWrite", db: "test" } ] })`
     - tehtävä `4.23` skipattu
+
+- [osa 5]()
+    - `git checkout `
+    - tehtävässä `5.5` skippasin ton useRef:in...
+    - tehtävässä `5.7` käytin mieluummin `<ul>`, kuin tuota surkeeta inline tyyliä
