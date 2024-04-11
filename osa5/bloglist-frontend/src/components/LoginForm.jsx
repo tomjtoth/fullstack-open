@@ -4,7 +4,7 @@ import blogService from '../services/blogs'
 const LoginForm = ({ x: {
     username, setUsername,
     password, setPassword,
-    setUser, setErrorMessage
+    setUser, setFeedback
 } }) => {
 
     const handleLogin = async (event) => {
@@ -16,11 +16,9 @@ const LoginForm = ({ x: {
             setUser(user)
             setUsername('')
             setPassword('')
-        } catch (exception) {
-            setErrorMessage('wrong credentials')
-            setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
+            setFeedback(['login succeeded'])
+        } catch (e) {
+            setFeedback([`login failed: ${e.response.data.error}`, true])
         }
     }
 
