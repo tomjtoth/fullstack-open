@@ -30,20 +30,18 @@ const App = () => {
   return (<>
     <Feedback x={{ feedback, setFeedback }} />
 
-    {user
-
-      ? <BlogForm x={{
-        blogs, setBlogs,
-        user, setUser,
-        setFeedback
-      }} />
-
-      : <LoginForm x={{
+    {!user &&
+      <LoginForm x={{
         username, setUsername,
         password, setPassword,
         setUser, setFeedback
       }} />
     }
+    <BlogForm x={{
+      blogs, setBlogs,
+      user, setUser,
+      setFeedback
+    }} />
   </>
   )
 }
