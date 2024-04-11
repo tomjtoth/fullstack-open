@@ -16,10 +16,18 @@ const App = () => {
     )
   }, [])
 
+  useEffect(() => {
+    const json = window.localStorage.getItem('user')
+    if (json) {
+      const user = JSON.parse(json)
+      setUser(user)
+    }
+  }, [])
+
 
   return (<>
     {user
-      ? <BlogForm x={{ blogs, user }} />
+      ? <BlogForm x={{ blogs, user, setUser }} />
       : <LoginForm x={{
         username, setUsername,
         password, setPassword,
