@@ -17,13 +17,13 @@ const Blog = ({ x: [blog, incrLike, delBlog] }) => {
                     {blog.url}
                 </li>
                 <li>
-          likes {blog.likes}
+                    likes {blog.likes}
                     <button
                         onClick={incrLike}
                     >like</button>
                 </li>
                 <li>
-          added by {blog.user.name}
+                    added by {blog.user.name}
                 </li>
                 {delBlog && <button onClick={delBlog}>remove this</button>}
             </ul>

@@ -21,17 +21,17 @@ const BlogCreationForm = ({ x: { blogs, setBlogs, setFeedback } }) => {
     return (
         <form action="/api/blogs" method='POST'>
             <h2>create new</h2>
-      title: <input
+            title: <input
                 value={title}
                 onChange={({ target: { value } }) => setTitle(value)}
             />
             <br />
-      author: <input
+            author: <input
                 value={author}
                 onChange={({ target: { value } }) => setAuthor(value)}
             />
             <br />
-      url: <input
+            url: <input
                 value={url}
                 onChange={({ target: { value } }) => setUrl(value)}
             />

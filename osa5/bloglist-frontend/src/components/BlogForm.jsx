@@ -69,7 +69,7 @@ const BlogForm = ({ x: {
                                 blog,
                                 incrLike.bind(null, blog),
                                 user && user.username === blog.user.username
-                && delBlog.bind(null, blog)
+                                && delBlog.bind(null, blog)
                             ]} />
                     )}
             </ul>
