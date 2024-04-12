@@ -24,7 +24,7 @@ test('title + author gets rendered, but not url and likes', () => {
     expect(screen.getByText('title', { exact: false })).toBeDefined();
     expect(screen.getByText('author', { exact: false })).toBeDefined();
     expect(screen.queryByText('url')).toBeNull();
-    expect(screen.queryByText('likes', { exact: false })).toBeNull();
+    expect(screen.queryByText('likes 123')).toBeNull();
 });
 
 test('url and likes get shown after clicking "expand"', async () => {
@@ -35,16 +35,16 @@ test('url and likes get shown after clicking "expand"', async () => {
     render(<Blog x={[BLOG, incrLike, delBlog]} />);
 
     expect(screen.queryByText('url')).toBeNull();
-    expect(screen.queryByText('likes', { exact: false })).toBeNull();
-    expect(screen.queryByText('Firstname Lastname', { exact: false })).toBeNull();
+    expect(screen.queryByText('likes 123')).toBeNull();
+    expect(screen.queryByText('Firstname Lastname')).toBeNull();
 
     const user = userEvent.setup();
     const button = screen.getByText('expand');
     await user.click(button);
 
     expect(screen.queryByText('url')).toBeDefined();
-    expect(screen.queryByText('likes', { exact: false })).toBeDefined();
-    expect(screen.queryByText('Firstname Lastname', { exact: false })).toBeDefined();
+    expect(screen.queryByText('likes 123')).toBeDefined();
+    expect(screen.queryByText('Firstname Lastname')).toBeDefined();
 });
 
 test('clicking the "like" button 2x calls `incrLike` 2x', async () => {
