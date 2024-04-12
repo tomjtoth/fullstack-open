@@ -22,5 +22,7 @@ const createNew = async (blog) =>
 const incrLike = async ({ id, likes }) =>
   (await axios.put(`${baseUrl}/${id}`, { likes: ++likes })).status
 
+const delBlog = async ({ id }) =>
+  (await axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: token } })).status
 
-export default { getAll, createNew, setToken, incrLike }
+export default { getAll, createNew, setToken, incrLike, delBlog }

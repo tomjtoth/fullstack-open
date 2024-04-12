@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ x: { blog, incrLike } }) => {
+const Blog = ({ x: [blog, incrLike, delBlog] }) => {
   const [visible, setVisible] = useState(false)
 
   return (
@@ -24,6 +24,7 @@ const Blog = ({ x: { blog, incrLike } }) => {
         <li>
           added by {blog.user.name}
         </li>
+        {delBlog && <button onClick={delBlog}>remove this</button>}
       </ul>
       }
     </li>

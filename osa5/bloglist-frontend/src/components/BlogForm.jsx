@@ -16,16 +16,29 @@ const BlogForm = ({ x: {
         blogSvc.incrLike(blog)
             .then(_status => {
                 const { id, likes, title } = blog
-                setFeedback([`${title} has ${likes + 1} likes now`])
                 setBlogs(blogs.map(b => {
                     if (b.id === id)
                         b.likes++
                     return b
                 }))
+                setFeedback([`${title} has ${likes + 1} likes now`])
             })
             .catch(e => {
                 setFeedback([`updating blog failed: ${e.response.data.error}`, true])
             })
+
+    const delBlog = (blog) => {
+        if (confirm(`really delete "${blog.title}" by ${blog.author}?`))
+            blogSvc.delBlog(blog)
+                .then(_status => {
+                    setBlogs(blogs.filter(({ id }) => id !== blog.id))
+                    setFeedback([`removed "${blog.title}" by ${blog.author}`])
+                })
+                .catch(e => {
+                    setFeedback([`removal failed: ${e.response.data.error}`, true])
+                })
+    }
+
 
     return (
         <div>
@@ -50,7 +63,14 @@ const BlogForm = ({ x: {
                         return 0
                     })
                     .map(blog =>
-                        <Blog key={blog.id} x={{ blog, incrLike: incrLike.bind(null, blog) }} />
+                        <Blog
+                            key={blog.id}
+                            x={[
+                                blog,
+                                incrLike.bind(null, blog),
+                                user && user.username === blog.user.username
+                                && delBlog.bind(null, blog)
+                            ]} />
                     )}
             </ul>
         </div>
