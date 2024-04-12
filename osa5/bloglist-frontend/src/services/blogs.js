@@ -17,7 +17,7 @@ const createNew = async (blog) =>
  * works without auth, nobodies can also like blogs
  *
  * @param {Blog} param0
- * @returns Blog
+ * @returns HTTP status code
  */
 const incrLike = async ({ id, likes }) =>
     (await axios.put(`${baseUrl}/${id}`, { likes: ++likes })).status;
