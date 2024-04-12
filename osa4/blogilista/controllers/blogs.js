@@ -31,7 +31,9 @@ router.post('/', async ({ body, user = null }, resp, next) => {
     user.blogs.push(savedBlog._id);
     await user.save();
 
-    resp.status(201).json(new_blog);
+    savedBlog.user = user;
+
+    resp.status(201).json(savedBlog);
 });
 
 
