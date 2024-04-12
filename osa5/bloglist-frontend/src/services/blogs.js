@@ -13,4 +13,14 @@ const getAll = () => {
 const createNew = async (blog) =>
   (await axios.post(baseUrl, blog, { headers: { Authorization: token } })).data
 
-export default { getAll, createNew, setToken }
+/**
+ * works without auth, nobodies can also like blogs
+ * 
+ * @param {Blog} param0 
+ * @returns Blog
+ */
+const incrLike = async ({ id, likes }) =>
+  (await axios.put(`${baseUrl}/${id}`, { likes: ++likes })).status
+
+
+export default { getAll, createNew, setToken, incrLike }
