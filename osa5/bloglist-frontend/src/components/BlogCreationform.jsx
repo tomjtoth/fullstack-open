@@ -1,44 +1,44 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
+import { useState } from 'react';
+import blogService from '../services/blogs';
 
 const BlogCreationForm = ({ x: { blogs, setBlogs, setFeedback } }) => {
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [url, setUrl] = useState('');
 
     const handleBlogSubmit = event => {
-        event.preventDefault()
+        event.preventDefault();
 
         blogService
             .createNew({ title, author, url })
             .then(created_blog => {
-                setBlogs(blogs.concat([created_blog]))
-                setFeedback(['creating new blog succeeded'])
+                setBlogs(blogs.concat([created_blog]));
+                setFeedback(['creating new blog succeeded']);
             })
-            .catch(e => setFeedback([`creating new blog failed: ${e.response.data.error}`, true]))
-    }
+            .catch(e => setFeedback([`creating new blog failed: ${e.response.data.error}`, true]));
+    };
 
     return (
         <form action="/api/blogs" method='POST'>
             <h2>create new</h2>
-            title: <input
+      title: <input
                 value={title}
                 onChange={({ target: { value } }) => setTitle(value)}
             />
             <br />
-            author: <input
+      author: <input
                 value={author}
                 onChange={({ target: { value } }) => setAuthor(value)}
             />
             <br />
-            url: <input
+      url: <input
                 value={url}
                 onChange={({ target: { value } }) => setUrl(value)}
             />
             <br />
             <button type="submit" onClick={handleBlogSubmit}>create</button>
         </form>
-    )
-}
+    );
+};
 
-export default BlogCreationForm
+export default BlogCreationForm;

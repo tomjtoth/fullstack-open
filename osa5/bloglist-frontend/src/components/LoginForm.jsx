@@ -1,5 +1,5 @@
-import loginService from '../services/login'
-import blogService from '../services/blogs'
+import loginService from '../services/login';
+import blogService from '../services/blogs';
 
 const LoginForm = ({ x: {
     username, setUsername,
@@ -8,19 +8,19 @@ const LoginForm = ({ x: {
 } }) => {
 
     const handleLogin = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
         try {
-            const user = await loginService.login({ username, password })
-            localStorage.setItem('user', JSON.stringify(user))
-            blogService.setToken(user.token)
-            setUser(user)
-            setUsername('')
-            setPassword('')
-            setFeedback(['login succeeded'])
+            const user = await loginService.login({ username, password });
+            localStorage.setItem('user', JSON.stringify(user));
+            blogService.setToken(user.token);
+            setUser(user);
+            setUsername('');
+            setPassword('');
+            setFeedback(['login succeeded']);
         } catch (e) {
-            setFeedback([`login failed: ${e.response.data.error}`, true])
+            setFeedback([`login failed: ${e.response.data.error}`, true]);
         }
-    }
+    };
 
     return (
         <form action="/api/login">
@@ -40,7 +40,7 @@ const LoginForm = ({ x: {
             <br />
             <button type="submit" onClick={handleLogin}>login</button>
         </form>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;

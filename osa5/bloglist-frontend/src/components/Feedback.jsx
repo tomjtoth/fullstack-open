@@ -8,21 +8,21 @@ const Feedback = ({ x: { feedback, setFeedback } }) => {
 
         const [msg, err = false] = feedback;
 
-        const cls = `feedback ${err && "error"}`;
+        const cls = `feedback ${err && 'error'}`;
 
-        counter++
+        counter++;
 
         setTimeout(() => {
-            if (--counter == 0)
+            if (--counter === 0)
                 setFeedback(null);
-        }, 3000)
+        }, 3000);
 
         return (
             <p className={cls}>
                 {msg}
             </p>
-        )
+        );
     }
-}
+};
 
-export default Feedback
+export default Feedback;
