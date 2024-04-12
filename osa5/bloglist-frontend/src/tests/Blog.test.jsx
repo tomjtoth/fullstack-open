@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Blog from '../components/Blog';
+// import BlogCreationForm from '../components/BlogCreationform';
 
 const BLOG = {
     title: 'title',
@@ -64,3 +65,31 @@ test('clicking the "like" button 2x calls `incrLike` 2x', async () => {
 
     expect(incrLike.mock.calls).toHaveLength(2);
 });
+
+// test('BlogCreationForm calls setBlogs with correct array (?)', async () => {
+//     const
+//         setBlogs = vi.fn(),
+//         setFeedback = vi.fn(),
+//         blogSvc = {
+//             createNew: vi.fn(),
+//             then: vi.fn(),
+//             catch: vi.fn()
+//         },
+//         blogs = [BLOG];
+
+//     render(<BlogCreationForm x={{ blogs, setBlogs, blogSvc, setFeedback }} />);
+
+//     const [title, author, url] = screen.getAllByRole('textbox');
+
+//     const user = userEvent.setup();
+
+//     await Promise.all([
+//         user.type(title, 'new title'),
+//         user.type(author, 'new author'),
+//         user.type(url, 'new url')
+//     ]);
+//     await user.click(screen.getByText('create'));
+//     console.log(blogSvc);
+
+//     // expect(blogSvc.createNew.calls).toHaveLength(2);
+// });
