@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import blogService from '../services/blogs';
 
-const BlogCreationForm = ({ x: { blogs, setBlogs, setFeedback } }) => {
+const BlogCreationForm = ({ x: { blogs, setBlogs, blogSvc, setFeedback } }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [url, setUrl] = useState('');
@@ -9,7 +8,7 @@ const BlogCreationForm = ({ x: { blogs, setBlogs, setFeedback } }) => {
     const handleBlogSubmit = event => {
         event.preventDefault();
 
-        blogService
+        blogSvc
             .createNew({ title, author, url })
             .then(created_blog => {
                 setBlogs(blogs.concat([created_blog]));

@@ -47,7 +47,7 @@ const BlogForm = ({ x: {
             {user && <>
                 <UserInfo x={{ user, setUser }} />
                 <br />
-                {showCreationForm && <BlogCreationForm x={{ blogs, setBlogs, setFeedback }} />}
+                {showCreationForm && <BlogCreationForm x={{ blogs, setBlogs, blogSvc, setFeedback }} />}
                 <button onClick={() => setShowCreationForm(!showCreationForm)}>{
                     showCreationForm
                         ? 'cancel'
