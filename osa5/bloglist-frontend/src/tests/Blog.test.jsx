@@ -46,3 +46,21 @@ test('url and likes get shown after clicking "expand"', async () => {
     expect(screen.queryByText('likes', { exact: false })).toBeDefined();
     expect(screen.queryByText('Firstname Lastname', { exact: false })).toBeDefined();
 });
+
+test('clicking the "like" button 2x calls `incrLike` 2x', async () => {
+    const
+        incrLike = vi.fn(),
+        delBlog = vi.fn();
+
+    render(<Blog x={[BLOG, incrLike, delBlog]} />);
+
+    const user = userEvent.setup();
+    const btnExpand = screen.getByText('expand');
+    await user.click(btnExpand);
+
+    const btnLike = screen.getByText('like');
+    await user.click(btnLike);
+    await user.click(btnLike);
+
+    expect(incrLike.mock.calls).toHaveLength(2);
+});
