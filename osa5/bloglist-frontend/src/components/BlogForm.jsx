@@ -43,9 +43,15 @@ const BlogForm = ({ x: {
             </>}
 
             <ul>
-                {blogs.map(blog =>
-                    <Blog key={blog.id} x={{ blog, incrLike: incrLike.bind(null, blog) }} />
-                )}
+                {blogs
+                    .sort(({ likes: a }, { likes: b }) => {
+                        if (a < b) return 1
+                        if (a > b) return -1
+                        return 0
+                    })
+                    .map(blog =>
+                        <Blog key={blog.id} x={{ blog, incrLike: incrLike.bind(null, blog) }} />
+                    )}
             </ul>
         </div>
     )
