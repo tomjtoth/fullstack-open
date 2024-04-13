@@ -10,11 +10,45 @@ const {
     dummyBlog,
     BLOG_FIELD_PRESETS
 } = require('./test_helper');
+const User = require('../models/user');
+const Blog = require('../models/blog');
+const { hash } = require('bcrypt');
 
+let user = null;
 
 describe('tests involving actual DB queries', () => {
 
-    beforeEach(populateDb);
+    beforeEach(async () => {
+        await populateDb();
+
+        await User.deleteMany({});
+
+        const testUser = {
+            username: 'root',
+            password: 'toor'
+        };
+
+        const saved_user = await new User({
+            ...testUser,
+            passwordHash: await hash(testUser.password, 10)
+        }).save();
+
+        // assign the new user to the blogs
+        await Blog.updateMany({}, { user: saved_user._id });
+
+        // assign all blogs to the new user
+        await User.updateOne({}, {
+            blogs: (await Blog.find({})).map(({ _id }) => _id)
+        });
+
+        const resp = await api
+            .post('/api/login')
+            .send(testUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        user = resp.body;
+    });
 
     test('right amount of blogs are returned as json', async () => {
         const blogs = await api
@@ -41,11 +75,18 @@ describe('tests involving actual DB queries', () => {
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
+            .set({
+                Authorization: `Bearer ${user.token}`
+            })
             .send(new_blog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
-        deepStrictEqual({ ...new_blog, id: saved_blog.id }, saved_blog);
+        deepStrictEqual({
+            ...new_blog,
+            id: saved_blog.id,
+            user: saved_blog.user
+        }, saved_blog);
 
         const blogs_now = await blogsInDb();
         strictEqual(blogs_now.length, initialBlogs.length + 1);
@@ -56,12 +97,16 @@ describe('tests involving actual DB queries', () => {
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
+            .set({
+                Authorization: `Bearer ${user.token}`
+            })
             .send(new_blog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
         deepStrictEqual({
             ...new_blog,
+            user: saved_blog.user,
             id: saved_blog.id,
             likes: 0
         }, saved_blog);
@@ -80,6 +125,9 @@ describe('tests involving actual DB queries', () => {
 
             const { body: { error } } = await api
                 .post('/api/blogs')
+                .set({
+                    Authorization: `Bearer ${user.token}`
+                })
                 .send(dummyBlog(0b111 - Math.pow(2, missing_field)))
                 .expect(400)
                 .expect('Content-Type', /application\/json/);
@@ -93,6 +141,9 @@ describe('tests involving actual DB queries', () => {
 
         await api
             .delete(`/api/blogs/${deleted_id}`)
+            .set({
+                Authorization: `Bearer ${user.token}`
+            })
             .expect(204);
 
         strictEqual(
@@ -106,6 +157,9 @@ describe('tests involving actual DB queries', () => {
     test('DELETE => HTTP 400 upon failure', async () => {
         await api
             .delete('/api/blogs/omena')
+            .set({
+                Authorization: `Bearer ${user.token}`
+            })
             .expect(400);
 
         strictEqual(
@@ -120,6 +174,9 @@ describe('tests involving actual DB queries', () => {
 
         await api
             .put(`/api/blogs/${updated_id}`)
+            .set({
+                Authorization: `Bearer ${user.token}`
+            })
             .send({ likes: 999 })
             .expect(204);
 
