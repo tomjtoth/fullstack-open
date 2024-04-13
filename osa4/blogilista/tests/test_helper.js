@@ -79,7 +79,8 @@ const resetDb = async (api = null) => {
 
     const testUser = {
         username: 'root',
-        password: 'toor'
+        password: 'toor',
+        name: 'I AM ROOT'
     };
 
     const saved_user = await new User({

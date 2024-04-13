@@ -74,12 +74,23 @@ describe('Blog ', function () {
         })
         cy.get('button').contains('create').click()
 
-
         cy.get('.feedback')
           .contains('creating new blog succeeded')
 
         cy.get('li').contains('cypress title')
       })
+    })
+
+    it.only('owner of blog can delete it', function () {
+      // osa4 tests create this user and INITIAL_BLOGS are assigned to it
+      cy.login({ username: 'root', password: 'toor' })
+      cy.contains('expand').first().click()
+      cy.contains('remove this').click()
+
+      cy.get('.feedback')
+        .contains('removed "Canonical string reduction" by Edsger W. Dijkstra')
+
+      cy.get('li').should('have.length', 5)
     })
 
   })
