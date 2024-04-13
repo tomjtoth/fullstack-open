@@ -44,6 +44,10 @@ app.use(requestLogger);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/login', loginRoutes);
+
+if (process.env.NODE_ENV === 'test')
+    app.use('/api/testing', require('./controllers/testing'));
+
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
