@@ -20,15 +20,17 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - docker compose:in sisällä (kahden containerin välillä) en käytä mongoDB:n auth:ia, koska se käyttäytyy omituisesti
         - lue kommentti [tässä](./osa3/puhelinluettelo-backend/models/person.js)
 
-- [osa 4](https://github.com/tomjtoth/fullstack-open/tree/e91479ece9fcc9a32675d1a63c2e920c6acc3699)
-    - `git checkout e91479ece9fcc9a32675d1a63c2e920c6acc3699`
+- [osa 4](https://github.com/tomjtoth/fullstack-open/tree/51cb2edbad6c13696799be5cfd1f835f993701fa)
+    - `git checkout 51cb2edbad6c13696799be5cfd1f835f993701fa`
         - tehtävä `4.1`: jälleen menin mongo-db:n docker kuvakkeella joka on etukäteen käynnistettävä kuten osassa 3
     - tehtävät `4.{4-7}` palauttaa KAIKEN kriteeria tyydyttävää ehdokasta
     - piti luoda käyttajätunnusta toiselle tietokannalle docker:ssa: `db.createUser({ user: "fullstack", pwd: passwordPrompt(), roles: [ { role: "readWrite", db: "test" } ] })`
+    - tehtävä `4.23` tehty osan 5 lopussa
 
-- [osa 5]()
+- [osa 5](https://github.com/tomjtoth/fullstack-open/tree/)
     - `git checkout `
     - tehtävässä `5.5` skippasin ton useRef:in...
     - tehtävässä `5.7` käytin mieluummin `<ul>`, kuin tuota surkeeta inline tyyliä
     - tehtävässä `5.8` ei todellakaan tarvii lähettää koko blogin, riittää like...
     - tehtävässä `5.16` en pystynyt testata, koska käytän promiseja
+        - tähän varmaan tarvii osan vika kappaleen kamat

@@ -116,7 +116,7 @@ describe('Blog ', function () {
     cy.get('@likeButton').parent().contains('likes 13')
   })
 
-  it.only('blog can be liked', function () {
+  it('blog can be liked', function () {
     cy.get('button.toggle').click({ multiple: true })
     cy.get('li li').then(texts =>
       Array.from(texts)
