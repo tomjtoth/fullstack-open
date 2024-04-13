@@ -106,7 +106,7 @@ describe('Blog ', function () {
   })
 
   it('blog can be liked', function () {
-    cy.get('button').contains('expand').click()
+    cy.get('button.toggle').first().click()
     cy.get('button').contains('like').as('likeButton')
     cy.get('@likeButton').click()
 
@@ -114,6 +114,24 @@ describe('Blog ', function () {
       .contains('Canonical string reduction has 13 likes now')
 
     cy.get('@likeButton').parent().contains('likes 13')
+  })
+
+  it.only('blog can be liked', function () {
+    cy.get('button.toggle').click({ multiple: true })
+    cy.get('li li').then(texts =>
+      Array.from(texts)
+        .map(({ innerHTML: txt }) => {
+          const extractedLikes = txt.match(/(?<=likes )\d+/);
+          return extractedLikes ? parseInt(extractedLikes[0]) : null
+        })
+        .filter(x => x !== null))
+      .then(arr => {
+        const sorted = [...arr]
+        sorted.sort((a, b) => b - a)
+        console.log(arr)
+        console.log(sorted)
+        expect(sorted).to.deep.equal(arr)
+      })
   })
 
 })

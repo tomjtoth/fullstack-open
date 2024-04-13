@@ -57,11 +57,7 @@ const BlogForm = ({ x: {
 
             <ul>
                 {blogs
-                    .sort(({ likes: a }, { likes: b }) => {
-                        if (a < b) return 1;
-                        if (a > b) return -1;
-                        return 0;
-                    })
+                    .sort(({ likes: a }, { likes: b }) => b - a)
                     .map(blog =>
                         <Blog
                             key={blog.id}
