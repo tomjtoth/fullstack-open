@@ -32,5 +32,4 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - tehtävässä `5.5` skippasin ton useRef:in...
     - tehtävässä `5.7` käytin mieluummin `<ul>`, kuin tuota surkeeta inline tyyliä
     - tehtävässä `5.8` ei todellakaan tarvii lähettää koko blogin, riittää like...
-    - tehtävässä `5.16` en pystynyt testata, koska käytän promiseja
-        - tähän varmaan tarvii osan vika kappaleen kamat
+    - tehtävä `5.16` skipattu
