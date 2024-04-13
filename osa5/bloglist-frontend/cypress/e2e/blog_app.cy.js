@@ -84,4 +84,15 @@ describe('Blog ', function () {
 
   })
 
+  it('blog can be liked', function () {
+    cy.get('button').contains('expand').click()
+    cy.get('button').contains('like').as('likeButton')
+    cy.get('@likeButton').click()
+
+    cy.get('.feedback')
+      .contains('Canonical string reduction has 13 likes now')
+
+    cy.get('@likeButton').parent().contains('likes 13')
+  })
+
 })
