@@ -7,11 +7,13 @@ const Blog = ({ x: [blog, incrLike, delBlog] }) => {
     return (
         <li>
             {blog.title} {blog.author}
-            <button onClick={() => setVisible(!visible)}>{
-                visible
-                    ? 'collapse'
-                    : 'expand'
-            }</button>
+            <button
+                onClick={() => setVisible(!visible)}
+                className="toggle">{
+                    visible
+                        ? 'collapse'
+                        : 'expand'
+                }</button>
             {visible && <ul>
                 <li>
                     {blog.url}
@@ -20,12 +22,15 @@ const Blog = ({ x: [blog, incrLike, delBlog] }) => {
                     likes {blog.likes}
                     <button
                         onClick={incrLike}
+                        className="like"
                     >like</button>
                 </li>
                 <li>
                     added by {blog.user.name}
                 </li>
-                {delBlog && <button onClick={delBlog}>remove this</button>}
+                {delBlog && <button
+                    onClick={delBlog}
+                    className="remove">remove this</button>}
             </ul>
             }
         </li>

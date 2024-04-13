@@ -81,16 +81,26 @@ describe('Blog ', function () {
       })
     })
 
-    it.only('owner of blog can delete it', function () {
+    it('owner of blog can delete it', function () {
       // osa4 tests create this user and INITIAL_BLOGS are assigned to it
       cy.login({ username: 'root', password: 'toor' })
-      cy.contains('expand').first().click()
-      cy.contains('remove this').click()
+      cy.get('button.toggle').first().click()
+      cy.get('button.remove').click()
 
       cy.get('.feedback')
         .contains('removed "Canonical string reduction" by Edsger W. Dijkstra')
 
       cy.get('li').should('have.length', 5)
+    })
+
+    it('only the owner of blog can see its remove button', function () {
+      // user Cypress cannot see remove buttons of user root's blogs
+      cy.get('button.toggle').click({ multiple: true })
+      cy.get('button.remove').should('have.length', 0)
+
+      cy.login({ username: 'root', password: 'toor' })
+      cy.get('button.toggle').click({ multiple: true })
+      cy.get('button.remove').should('have.length', 6)
     })
 
   })
