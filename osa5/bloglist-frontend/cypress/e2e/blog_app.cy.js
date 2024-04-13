@@ -56,6 +56,32 @@ describe('Blog ', function () {
         .contains('login failed: wrong password')
     })
 
+    describe('when logged in', function () {
+
+      beforeEach(function () {
+        cy.login({
+          username: 'cypress',
+          password: 'cypress'
+        })
+      })
+
+      it('user can create blog', function () {
+        cy.contains('create new blog').click()
+        cy.get('input').then(([title, author, url]) => {
+          cy.wrap(title).type('cypress title')
+          cy.wrap(author).type('cypress author')
+          cy.wrap(url).type('cypress url')
+        })
+        cy.get('button').contains('create').click()
+
+
+        cy.get('.feedback')
+          .contains('creating new blog succeeded')
+
+        cy.get('li').contains('cypress title')
+      })
+    })
+
   })
 
 })
