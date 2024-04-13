@@ -27,8 +27,8 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
     - piti luoda käyttajätunnusta toiselle tietokannalle docker:ssa: `db.createUser({ user: "fullstack", pwd: passwordPrompt(), roles: [ { role: "readWrite", db: "test" } ] })`
     - tehtävä `4.23` tehty osan 5 lopussa
 
-- [osa 5](https://github.com/tomjtoth/fullstack-open/tree/)
-    - `git checkout `
+- [osa 5](https://github.com/tomjtoth/fullstack-open/tree/5d6a235aed6c8ebe706c1a01530413c803993302)
+    - `git checkout 5d6a235aed6c8ebe706c1a01530413c803993302`
     - tehtävässä `5.5` skippasin ton useRef:in...
     - tehtävässä `5.7` käytin mieluummin `<ul>`, kuin tuota surkeeta inline tyyliä
     - tehtävässä `5.8` ei todellakaan tarvii lähettää koko blogin, riittää like...
