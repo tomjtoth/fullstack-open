@@ -4,50 +4,20 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const api = supertest(require('../app'));
 const {
-    initialBlogs,
-    populateDb,
+    INITIAL_BLOGS,
+    resetDb,
     blogsInDb,
     dummyBlog,
     BLOG_FIELD_PRESETS
 } = require('./test_helper');
-const User = require('../models/user');
-const Blog = require('../models/blog');
-const { hash } = require('bcrypt');
 
-let user = null;
+
+let authHeader;
 
 describe('tests involving actual DB queries', () => {
 
     beforeEach(async () => {
-        await populateDb();
-
-        await User.deleteMany({});
-
-        const testUser = {
-            username: 'root',
-            password: 'toor'
-        };
-
-        const saved_user = await new User({
-            ...testUser,
-            passwordHash: await hash(testUser.password, 10)
-        }).save();
-
-        // assign the new user to the blogs
-        await Blog.updateMany({}, { user: saved_user._id });
-
-        // assign all blogs to the new user
-        await User.updateOne({}, {
-            blogs: (await Blog.find({})).map(({ _id }) => _id)
-        });
-
-        const resp = await api
-            .post('/api/login')
-            .send(testUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/);
-
-        user = resp.body;
+        authHeader = await resetDb(api);
     });
 
     test('right amount of blogs are returned as json', async () => {
@@ -56,7 +26,7 @@ describe('tests involving actual DB queries', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/);
 
-        strictEqual(blogs.body.length, initialBlogs.length);
+        strictEqual(blogs.body.length, INITIAL_BLOGS.length);
     });
 
     test('id property is present on blogs', async () => {
@@ -75,9 +45,7 @@ describe('tests involving actual DB queries', () => {
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
-            .set({
-                Authorization: `Bearer ${user.token}`
-            })
+            .set(authHeader)
             .send(new_blog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -89,7 +57,7 @@ describe('tests involving actual DB queries', () => {
         }, saved_blog);
 
         const blogs_now = await blogsInDb();
-        strictEqual(blogs_now.length, initialBlogs.length + 1);
+        strictEqual(blogs_now.length, INITIAL_BLOGS.length + 1);
     });
 
     test('`likes` defaults to 0 if undefined', async () => {
@@ -97,9 +65,7 @@ describe('tests involving actual DB queries', () => {
 
         const { body: saved_blog } = await api
             .post('/api/blogs')
-            .set({
-                Authorization: `Bearer ${user.token}`
-            })
+            .set(authHeader)
             .send(new_blog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -125,9 +91,7 @@ describe('tests involving actual DB queries', () => {
 
             const { body: { error } } = await api
                 .post('/api/blogs')
-                .set({
-                    Authorization: `Bearer ${user.token}`
-                })
+                .set(authHeader)
                 .send(dummyBlog(0b111 - Math.pow(2, missing_field)))
                 .expect(400)
                 .expect('Content-Type', /application\/json/);
@@ -137,13 +101,11 @@ describe('tests involving actual DB queries', () => {
     });
 
     test('DELETE => HTTP 204 upon success', async () => {
-        const deleted_id = initialBlogs[0]._id;
+        const deleted_id = INITIAL_BLOGS[0]._id;
 
         await api
             .delete(`/api/blogs/${deleted_id}`)
-            .set({
-                Authorization: `Bearer ${user.token}`
-            })
+            .set(authHeader)
             .expect(204);
 
         strictEqual(
@@ -157,26 +119,22 @@ describe('tests involving actual DB queries', () => {
     test('DELETE => HTTP 400 upon failure', async () => {
         await api
             .delete('/api/blogs/omena')
-            .set({
-                Authorization: `Bearer ${user.token}`
-            })
+            .set(authHeader)
             .expect(400);
 
         strictEqual(
             (await blogsInDb()).length,
-            initialBlogs.length
+            INITIAL_BLOGS.length
         );
     });
 
 
     test('PUT => HTTP 204 upon success', async () => {
-        const updated_id = initialBlogs[0]._id;
+        const updated_id = INITIAL_BLOGS[0]._id;
 
         await api
             .put(`/api/blogs/${updated_id}`)
-            .set({
-                Authorization: `Bearer ${user.token}`
-            })
+            .set(authHeader)
             .send({ likes: 999 })
             .expect(204);
 

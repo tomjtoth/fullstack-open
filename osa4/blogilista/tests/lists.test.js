@@ -7,7 +7,7 @@ const {
     mostBlogs,
     mostLikes
 } = require('../utils/list_helper');
-const { initialBlogs } = require('./test_helper');
+const { INITIAL_BLOGS } = require('./test_helper');
 
 
 test('dummy(blogs) => 1', () => {
@@ -25,7 +25,7 @@ describe('totalLikes', () => {
 
     test('array of 1 blog equals 1st elements\' likes', () => {
         strictEqual(
-            totalLikes([initialBlogs[0]]), initialBlogs[0].likes
+            totalLikes([INITIAL_BLOGS[0]]), INITIAL_BLOGS[0].likes
         );
     });
 
@@ -40,8 +40,8 @@ describe('totalLikes', () => {
         );
     });
 
-    test('totalLikes(initialBlogs) => 36', () => {
-        strictEqual(totalLikes(initialBlogs), 36);
+    test('totalLikes(INITIAL_BLOGS) => 36', () => {
+        strictEqual(totalLikes(INITIAL_BLOGS), 36);
     });
 
 });
@@ -59,24 +59,24 @@ describe('favoriteBlog', () => {
     });
 
     test('larger array works fine with 1 top-liked element', () => {
-        deepStrictEqual(favoriteBlog(initialBlogs), [initialBlogs[2]]);
+        deepStrictEqual(favoriteBlog(INITIAL_BLOGS), [INITIAL_BLOGS[2]]);
     });
 
     test('larger array works fine with more top-liked element', () => {
 
-        const injected = [...initialBlogs];
+        const injected = [...INITIAL_BLOGS];
 
         injected.splice(2, 0,
-            initialBlogs[2],
-            initialBlogs[2],
-            initialBlogs[2]
+            INITIAL_BLOGS[2],
+            INITIAL_BLOGS[2],
+            INITIAL_BLOGS[2]
         );
 
         deepStrictEqual(favoriteBlog(injected), [
-            initialBlogs[2],
-            initialBlogs[2],
-            initialBlogs[2],
-            initialBlogs[2]
+            INITIAL_BLOGS[2],
+            INITIAL_BLOGS[2],
+            INITIAL_BLOGS[2],
+            INITIAL_BLOGS[2]
         ]);
     });
 
@@ -85,8 +85,8 @@ describe('favoriteBlog', () => {
 describe('mostBlogs', () => {
 
     test('return most popular author', () => {
-        deepStrictEqual(mostBlogs(initialBlogs), [{
-            author: initialBlogs[3].author,
+        deepStrictEqual(mostBlogs(INITIAL_BLOGS), [{
+            author: INITIAL_BLOGS[3].author,
             blogs: 3
         }]);
     });
@@ -98,15 +98,15 @@ describe('mostBlogs', () => {
 
     test('returns both top-authors', () => {
 
-        const modified = [...initialBlogs, initialBlogs[2]];
+        const modified = [...INITIAL_BLOGS, INITIAL_BLOGS[2]];
 
         deepStrictEqual(mostBlogs(modified), [
             {
-                author: initialBlogs[2].author,
+                author: INITIAL_BLOGS[2].author,
                 blogs: 3
             },
             {
-                author: initialBlogs[3].author,
+                author: INITIAL_BLOGS[3].author,
                 blogs: 3
             }
         ]);
@@ -117,8 +117,8 @@ describe('mostBlogs', () => {
 describe('mostLikes', () => {
 
     test('return correct author with mostLikes', () => {
-        deepStrictEqual(mostLikes(initialBlogs), [{
-            author: initialBlogs[2].author,
+        deepStrictEqual(mostLikes(INITIAL_BLOGS), [{
+            author: INITIAL_BLOGS[2].author,
             likes: 17
         }]);
     });
@@ -129,18 +129,18 @@ describe('mostLikes', () => {
 
     test('mostLikes reutrns both top-authors', () => {
 
-        const modified = [...initialBlogs, {
-            ...initialBlogs[0],
+        const modified = [...INITIAL_BLOGS, {
+            ...INITIAL_BLOGS[0],
             likes: 10
         }];
 
         deepStrictEqual(mostLikes(modified), [
             {
-                author: initialBlogs[0].author,
+                author: INITIAL_BLOGS[0].author,
                 likes: 17
             },
             {
-                author: initialBlogs[2].author,
+                author: INITIAL_BLOGS[2].author,
                 likes: 17
             }
         ]);

@@ -1,7 +1,8 @@
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const { hash } = require('bcrypt');
 
-const initialBlogs = [
+const INITIAL_BLOGS = [
     {
         _id: '5a422a851b54a676234d17f7',
         title: 'React patterns',
@@ -72,9 +73,41 @@ const dummyBlog = (requested_fields = 0b1111) => {
         ));
 };
 
-const populateDb = async () => {
+const resetDb = async (api = null) => {
+
+    await User.deleteMany({});
+
+    const testUser = {
+        username: 'root',
+        password: 'toor'
+    };
+
+    const saved_user = await new User({
+        ...testUser,
+        passwordHash: await hash(testUser.password, 10),
+        blogs: INITIAL_BLOGS.map(b => b._id)
+    }).save();
+
     await Blog.deleteMany({});
-    await Blog.insertMany(initialBlogs);
+    await Blog.insertMany(
+        INITIAL_BLOGS.map(b => ({
+            ...b,
+            user: saved_user._id
+        }))
+    );
+
+    if (api) {
+        const resp = await api
+            .post('/api/login')
+            .send(testUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        return {
+            Authorization: `Bearer ${resp.body.token}`
+        };
+    }
+
 };
 
 const blogsInDb = async () => {
@@ -88,8 +121,8 @@ const usersInDb = async () => {
 };
 
 module.exports = {
-    initialBlogs,
-    populateDb,
+    INITIAL_BLOGS,
+    resetDb,
     blogsInDb,
     dummyBlog,
     BLOG_FIELD_PRESETS,
