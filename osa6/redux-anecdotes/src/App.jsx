@@ -1,12 +1,12 @@
 import Anecdotes from "./components/Anecdotes"
-import NewAnecdoteForm from "./components/NewAnecdoteForm"
+import CreationForm from "./components/NewAnecdoteForm"
 
 const App = () => {
 
   return (
     <>
       <Anecdotes />
-      <NewAnecdoteForm />
+      <CreationForm />
     </>
   )
 }

@@ -1,14 +1,31 @@
-const NewAnecdoteForm = () => {
+import { useDispatch } from 'react-redux'
+import { createA } from "../reducers/anecdoteReducer"
+
+const CreationForm = () => {
+
+    const dispatch = useDispatch()
+
+
+    const handleSubmit = (ev) => {
+        ev.preventDefault()
+
+        const content = ev.target.content.value
+        ev.target.content.value = ''
+
+        dispatch(createA(content))
+    }
 
     return (
         <>
             <h2>create new</h2>
-            <form>
-                <div><input /></div>
-                <button>create</button>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <input name="content" />
+                </div>
+                <button type="submit">create</button>
             </form>
         </>
     )
 }
 
-export default NewAnecdoteForm
+export default CreationForm
