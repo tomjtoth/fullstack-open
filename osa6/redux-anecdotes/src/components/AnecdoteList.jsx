@@ -3,13 +3,17 @@ import { vote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
 
-  const anecdotes = useSelector(({ anecdotes }) => anecdotes)
+  const anecdotes = useSelector(({
+    filter: re,
+    anecdotes
+  }) =>
+    anecdotes.filter(a => re.test(a.content)))
   const dispatch = useDispatch()
 
 
   return (
     <>
-      <h2>Anecdotes</h2>{
+      {
         anecdotes
           .sort((
             { votes: a },
