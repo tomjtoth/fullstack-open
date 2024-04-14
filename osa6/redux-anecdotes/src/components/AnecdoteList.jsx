@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
 
   const anecdotes = useSelector(({ anecdotes }) => anecdotes)
   const dispatch = useDispatch()
@@ -33,4 +33,4 @@ const Anecdotes = () => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList
