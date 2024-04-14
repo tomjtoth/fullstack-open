@@ -10,7 +10,9 @@ const Filter = () => {
     const str = ev.target.value
 
     try {
-      dispatch(changeFilter(new RegExp(str)));
+      // Redux complains about regexes being not serializable...
+      new RegExp(str)
+      dispatch(changeFilter(str));
     }
     catch {
       toast.error(`/${str}/ is not a valid regex`)

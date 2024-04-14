@@ -4,12 +4,14 @@ import { vote } from '../reducers/anecdoteReducer'
 const AnecdoteList = () => {
 
   const anecdotes = useSelector(({
-    filter: re,
+    filter,
     anecdotes
-  }) =>
-    anecdotes.filter(a => re.test(a.content)))
-  const dispatch = useDispatch()
+  }) => {
+    const re = new RegExp(filter)
+    return anecdotes.filter(a => re.test(a.content))
+  })
 
+  const dispatch = useDispatch()
 
   return (
     <>
