@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { setFeedback } from '../reducers/notificationReducer'
+import { nullFeedback } from '../reducers/notificationReducer'
+
+let counter = 0
 
 const Notification = () => {
   const dispatch = useDispatch()
@@ -7,12 +9,14 @@ const Notification = () => {
   const notification = useSelector(({ notifications: n }) => n)
 
   if (notification) {
+    ++counter
 
     const [text, isError = false] = notification
 
     setTimeout(() => {
-      dispatch(setFeedback(null))
-    }, 3000)
+      if (--counter === 0)
+        dispatch(nullFeedback())
+    }, 5000)
 
     return (
       <div style={{

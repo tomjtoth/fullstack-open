@@ -11,8 +11,8 @@ const App = () => {
   return (
     <>
       <ToastContainer />
-      <Notification />
       <h2>Anecdotes</h2>
+      <Notification />
       <Filter />
       <AnecdoteList />
       <AnecdoteForm />

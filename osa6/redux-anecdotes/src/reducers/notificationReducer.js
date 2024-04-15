@@ -8,9 +8,12 @@ const slice = createSlice({
   reducers: {
     setFeedback(_state, { payload }) {
       return payload
+    },
+    nullFeedback() {
+      return null
     }
   }
 })
 
-export const { setFeedback } = slice.actions
+export const { setFeedback, nullFeedback } = slice.actions
 export default slice.reducer
