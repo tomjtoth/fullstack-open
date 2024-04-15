@@ -1,7 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { createNew } from "../reducers/anecdoteReducer"
-import { setFeedback } from '../reducers/notificationReducer'
-import svc from '../services/anecdotes'
+import { addAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteForm = () => {
 
@@ -13,11 +11,7 @@ const AnecdoteForm = () => {
 
     const content = ev.target.content.value
     ev.target.content.value = ''
-
-    svc.add(content).then(a => {
-      dispatch(createNew(a))
-      dispatch(setFeedback(['anecdote added']))
-    })
+    dispatch(addAnecdote(content))
   }
 
   return (

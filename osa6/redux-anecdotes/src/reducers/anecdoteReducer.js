@@ -28,8 +28,15 @@ export const { createNew, vote } = slice.actions
 
 export const initAnecdotes = () => {
   return async dispatch => {
-    const notes = await svc.getAll()
-    dispatch(createNew(notes))
+    const anecdotes = await svc.getAll()
+    dispatch(createNew(anecdotes))
+  }
+}
+
+export const addAnecdote = (content) => {
+  return async dispatch => {
+    const anecdote = await svc.add(content)
+    dispatch(createNew(anecdote))
   }
 }
 
