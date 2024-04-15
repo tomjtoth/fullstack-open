@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
+import { vote, createNew } from '../reducers/anecdoteReducer'
 import { setFeedback } from '../reducers/notificationReducer'
+import svc from '../services/anecdotes'
 
 const AnecdoteList = () => {
 
@@ -13,6 +15,10 @@ const AnecdoteList = () => {
   })
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    svc.getAll().then(data => dispatch(createNew(data)))
+  }, [])
 
   return (
     <>
