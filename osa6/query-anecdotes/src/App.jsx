@@ -22,6 +22,12 @@ const App = () => {
       //   anecdotes.concat(newAn)
       // )
     },
+    onError: (e) => {
+      notiDispatcher({
+        type: 'SET',
+        payload: `${e.response.data.error}`
+      })
+    }
   })
 
   const onCreate = (event) => {
@@ -85,7 +91,7 @@ const App = () => {
       <div>
         <h3>create new</h3>
         <form onSubmit={onCreate}>
-          <input minLength="5" name='anecdote' />
+          <input name='anecdote' />
           <button type="submit">create</button>
         </form>
       </div>
