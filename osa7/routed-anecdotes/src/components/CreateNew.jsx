@@ -1,9 +1,9 @@
 import { useField } from '../hooks/index'
 
 const CreateNew = ({ addNew }) => {
-  const content = useField()
-  const author = useField()
-  const info = useField()
+  const { reset: resetC, ...content } = useField()
+  const { reset: resetA, ...author } = useField()
+  const { reset: resetI, ...info } = useField()
 
 
   const handleSubmit = (e) => {
@@ -18,9 +18,9 @@ const CreateNew = ({ addNew }) => {
 
   const handleReset = (e) => {
     e.preventDefault()
-    content.reset()
-    author.reset()
-    info.reset()
+    resetA()
+    resetC()
+    resetI()
   }
 
   return (
