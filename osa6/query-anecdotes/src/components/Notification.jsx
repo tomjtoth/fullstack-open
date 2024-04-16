@@ -1,3 +1,8 @@
+// import { useContext } from 'react'
+import { useNotiValue, useNotiDispatch } from '../providers/NotificationContext'
+
+let counter = 0
+
 const Notification = () => {
   const style = {
     border: 'solid',
@@ -5,14 +10,24 @@ const Notification = () => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
-  if (true) return null
 
-  return (
-    <div style={style}>
-      
-    </div>
-  )
+  const noti = useNotiValue()
+  const dispatch = useNotiDispatch()
+
+  if (noti) {
+    counter++
+
+    setTimeout(() => {
+      if (--counter === 0)
+        dispatch({ type: 'NULL' })
+    }, 5000)
+
+    return (
+      <div style={style}>
+        {noti}
+      </div>
+    )
+  }
 }
 
 export default Notification
