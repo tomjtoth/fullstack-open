@@ -1,28 +1,31 @@
-import axios from 'axios';
-const baseUrl = '/api/blogs';
+import axios from "axios";
+import { getConfig } from "./login";
 
-let token = null;
+const baseUrl = "/api/blogs";
 
-const setToken = newToken => { token = `Bearer ${newToken}`; };
-
-const getAll = () => {
-    const request = axios.get(baseUrl);
-    return request.then(response => response.data);
+const getAll = async () => {
+  const response = await axios.get(baseUrl);
+  return response.data;
 };
 
-const createNew = async (blog) =>
-    (await axios.post(baseUrl, blog, { headers: { Authorization: token } })).data;
+const create = async (item) => {
+  const response = await axios.post(baseUrl, item, getConfig());
+  return response.data;
+};
 
-/**
- * works without auth, nobodies can also like blogs
- *
- * @param {Blog} param0
- * @returns HTTP status code
- */
-const incrLike = async ({ id, likes }) =>
-    (await axios.put(`${baseUrl}/${id}`, { likes: ++likes })).status;
+const update = async (item) => {
+  const response = await axios.put(`${baseUrl}/${item.id}`, item);
+  return response.data;
+};
 
-const delBlog = async ({ id }) =>
-    (await axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: token } })).status;
+const remove = async ({ id }) => {
+  const response = await axios.delete(`${baseUrl}/${id}`, getConfig());
+  return response.data;
+};
 
-export default { getAll, createNew, setToken, incrLike, delBlog };
+export default {
+  getAll,
+  create,
+  update,
+  remove,
+};

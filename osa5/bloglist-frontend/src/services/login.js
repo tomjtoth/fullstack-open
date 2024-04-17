@@ -1,9 +1,21 @@
-import axios from 'axios';
-const baseUrl = '/api/login';
+import axios from "axios";
+const baseUrl = "/api/login";
 
-const login = async credentials => {
-    const response = await axios.post(baseUrl, credentials);
-    return response.data;
+let config = null;
+
+const setToken = (newToken) => {
+  config = {
+    headers: {
+      Authorization: `Bearer ${newToken}`,
+    },
+  };
 };
 
-export default { login };
+export const getConfig = () => config;
+
+const login = async (credentials) => {
+  const response = await axios.post(baseUrl, credentials);
+  return response.data;
+};
+
+export default { login, setToken };

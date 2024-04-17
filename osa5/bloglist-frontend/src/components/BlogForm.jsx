@@ -1,77 +1,72 @@
-import { useState } from 'react';
-import blogSvc from '../services/blogs';
-import Blog from './Blog';
-import BlogCreationForm from './BlogCreationform';
-import UserInfo from './UserInfo';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { initBlogs, likeBlog, removeBlog } from "../reducers/blogReducer";
+import { logout } from "../reducers/userReducer";
+import Blog from "./Blog";
+import BlogCreationForm from "./BlogCreationform";
 
-const BlogForm = ({ x: {
-    blogs, setBlogs,
-    user, setUser,
-    setFeedback
-} }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch();
+  // this is only a local boolean to remember if showing the form
+  const [showForm, toggleForm] = useState(false);
+  const { blogs, user } = useSelector(({ blogs, user }) => ({ blogs, user }));
 
-    const [showCreationForm, setShowCreationForm] = useState(false);
+  useEffect(() => {
+    dispatch(initBlogs());
+  }, []);
 
-    const incrLike = (blog) =>
-        blogSvc.incrLike(blog)
-            .then(_status => {
-                const { id, likes, title } = blog;
-                setBlogs(blogs.map(b => {
-                    if (b.id === id)
-                        b.likes++;
-                    return b;
-                }));
-                setFeedback([`${title} has ${likes + 1} likes now`]);
-            })
-            .catch(e => {
-                setFeedback([`updating blog failed: ${e.response.data.error}`, true]);
-            });
+  const likeBlogHandler = (blog) => () => {
+    dispatch(likeBlog(blog));
+  };
 
-    const delBlog = (blog) => {
-        if (confirm(`really delete "${blog.title}" by ${blog.author}?`))
-            blogSvc.delBlog(blog)
-                .then(_status => {
-                    setBlogs(blogs.filter(({ id }) => id !== blog.id));
-                    setFeedback([`removed "${blog.title}" by ${blog.author}`]);
-                })
-                .catch(e => {
-                    setFeedback([`removal failed: ${e.response.data.error}`, true]);
-                });
-    };
+  const removeBlogHandler = (blog) => () => {
+    if (confirm(`really delete "${blog.title}" by ${blog.author}?`)) {
+      dispatch(removeBlog(blog));
+    }
+  };
 
+  return (
+    <div>
+      <h2>blogs</h2>
 
-    return (
-        <div>
-            <h2>blogs</h2>
+      {user && (
+        <>
+          <p>{user.name} logged in</p>
+          <button
+            onClick={() => {
+              dispatch(logout());
+              localStorage.removeItem("user");
+            }}
+          >
+            logout
+          </button>
+          <br />
+          {showForm && <BlogCreationForm />}
+          <button onClick={() => toggleForm(!showForm)}>
+            {showForm ? "cancel" : "create new blog"}
+          </button>
+        </>
+      )}
 
-            {user && <>
-                <UserInfo x={{ user, setUser }} />
-                <br />
-                {showCreationForm && <BlogCreationForm x={{ blogs, setBlogs, blogSvc, setFeedback }} />}
-                <button onClick={() => setShowCreationForm(!showCreationForm)}>{
-                    showCreationForm
-                        ? 'cancel'
-                        : 'create new blog'
-                }</button>
-            </>}
-
-            <ul>
-                {blogs
-                    .sort(({ likes: a }, { likes: b }) => b - a)
-                    .map(blog =>
-                        <Blog
-                            key={blog.id}
-                            x={[
-                                blog,
-                                incrLike.bind(null, blog),
-                                user && user.username === blog.user.username
-                                && delBlog.bind(null, blog)
-                            ]} />
-                    )}
-            </ul>
-        </div>
-    );
+      <ul>
+        {blogs &&
+          blogs
+            // .sort(({ likes: a }, { likes: b }) => b - a)
+            .map((blog) => {
+              const props = {
+                key: blog.id,
+                blog,
+                like: likeBlogHandler(blog),
+                remove:
+                  user &&
+                  user.username === blog.user.username &&
+                  removeBlogHandler(blog),
+              };
+              return <Blog {...props} />;
+            })}
+      </ul>
+    </div>
+  );
 };
-
 
 export default BlogForm;

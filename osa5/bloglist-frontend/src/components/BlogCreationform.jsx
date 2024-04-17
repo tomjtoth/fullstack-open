@@ -1,43 +1,38 @@
-import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
+import { useField } from "../hooks/field";
 
-const BlogCreationForm = ({ x: { blogs, setBlogs, blogSvc, setFeedback } }) => {
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [url, setUrl] = useState('');
+const BlogCreationForm = () => {
+  const { reset: reTitle, ...title } = useField();
+  const { reset: reAuthor, ...author } = useField();
+  const { reset: reUrl, ...url } = useField();
+  const dispatch = useDispatch();
 
-    const handleBlogSubmit = event => {
-        event.preventDefault();
-
-        blogSvc
-            .createNew({ title, author, url })
-            .then(created_blog => {
-                setBlogs(blogs.concat([created_blog]));
-                setFeedback(['creating new blog succeeded']);
-            })
-            .catch(e => setFeedback([`creating new blog failed: ${e.response.data.error}`, true]));
-    };
-
-    return (
-        <form action="/api/blogs" method='POST'>
-            <h2>create new</h2>
-            title: <input
-                value={title}
-                onChange={({ target: { value } }) => setTitle(value)}
-            />
-            <br />
-            author: <input
-                value={author}
-                onChange={({ target: { value } }) => setAuthor(value)}
-            />
-            <br />
-            url: <input
-                value={url}
-                onChange={({ target: { value } }) => setUrl(value)}
-            />
-            <br />
-            <button type="submit" onClick={handleBlogSubmit}>create</button>
-        </form>
+  const handleBlogSubmit = (event) => {
+    event.preventDefault();
+    dispatch(
+      createBlog({
+        title: title.value,
+        author: author.value,
+        url: url.value,
+      }),
     );
+  };
+
+  return (
+    <form action="/api/blogs" method="POST">
+      <h2>create new</h2>
+      title: <input {...title} />
+      <br />
+      author: <input {...author} />
+      <br />
+      url: <input {...url} />
+      <br />
+      <button type="submit" onClick={handleBlogSubmit}>
+        create
+      </button>
+    </form>
+  );
 };
 
 export default BlogCreationForm;
