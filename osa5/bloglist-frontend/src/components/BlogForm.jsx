@@ -49,9 +49,10 @@ const BlogForm = () => {
       )}
 
       <ul>
-        {blogs &&
-          blogs
-            // .sort(({ likes: a }, { likes: b }) => b - a)
+        {
+          // Arry.sort modifies the original array...
+          [...blogs]
+            .sort(({ likes: a }, { likes: b }) => b - a)
             .map((blog) => {
               const props = {
                 key: blog.id,

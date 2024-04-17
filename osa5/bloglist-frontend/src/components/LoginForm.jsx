@@ -32,10 +32,12 @@ const LoginForm = () => {
     <form action="/api/login">
       <h2>Log in to application</h2>
       username:
-      <input {...username} />
+      <input {...username}
+        name="username" />
       <br />
       password:
-      <input {...password} />
+      <input {...password}
+        name="password" />
       <br />
       <button type="submit" onClick={handleLogin}>
         login
