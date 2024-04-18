@@ -12,7 +12,7 @@ const Navbar = () => {
       <Link to="/blogs">blogs</Link>
       <Link to="/users">users</Link>
       {session
-        ? <div className="auth">
+        ? <>
           <i>
             {session.name} logged in
           </i>
@@ -22,7 +22,7 @@ const Navbar = () => {
             }}>
             logout
           </button>
-        </div>
+        </>
         : <Link className="auth" to="/login">login</Link>
       }
     </nav>

@@ -28,15 +28,26 @@ const LoginForm = () => {
   return (
     <form action="/api/login">
       <h2>Log in to application</h2>
-      username:
-      <input {...username}
-        name="username" />
-      <br />
-      password:
-      <input {...password}
-        name="password" />
-      <br />
-      <button type="submit" onClick={handleLogin}>
+      <table>
+        <tbody>
+          <tr>
+            <td>username:</td>
+            <td>
+              <input {...username} name="username" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>password:</td>
+            <td>
+              <input {...password} name="password" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button style={{
+        float: "left"
+      }} type="submit" onClick={handleLogin}>
         login
       </button>
     </form>

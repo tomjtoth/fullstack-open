@@ -22,10 +22,6 @@ nav {
     padding: 5px;
 }
 
-nav .auth {
-    float: right;
-}
-
 button.login {
     margin-left: 0.5em;
 }
