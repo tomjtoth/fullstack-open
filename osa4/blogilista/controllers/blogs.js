@@ -58,22 +58,26 @@ router.delete('/:id', async ({ params: { id }, user = null }, resp, next) => {
   resp.status(200).json(deletedBlog);
 });
 
-router.put('/:id', async ({ params: { id }, body: { likes } }, resp) => {
-  const updatedBlog = await Blog.findByIdAndUpdate(
-    id,
-    { likes },
-    {
+router.put(
+  '/:id',
+  async ({ params: { id }, body: { likes, comments } }, resp) => {
+    const diff = {};
+
+    if (likes) diff.likes = likes;
+    if (comments) diff.comments = comments;
+
+    const updatedBlog = await Blog.findByIdAndUpdate(id, diff, {
       new: true,
       runValidators: true,
       context: 'query',
-    }
-  ).populate('user', {
-    username: 1,
-    name: 1,
-    _id: 1,
-  });
+    }).populate('user', {
+      username: 1,
+      name: 1,
+      _id: 1,
+    });
 
-  resp.status(200).json(updatedBlog);
-});
+    resp.status(200).json(updatedBlog);
+  }
+);
 
 module.exports = router;

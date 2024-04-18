@@ -1,8 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
+import { useField } from '../hooks/field'
 import { Link } from "react-router-dom"
-import { likeBlog, removeBlog } from "../reducers/blogReducer"
+import { likeBlog, removeBlog, addComment } from "../reducers/blogReducer"
 
 const Blog = ({ blog }) => {
+
+  const {
+    reset: resetComment,
+    ...commentInput
+  } = useField()
 
   const dispatch = useDispatch()
 
@@ -23,6 +29,15 @@ const Blog = ({ blog }) => {
     }
   };
 
+  const handleComment = (event) => {
+    event.preventDefault();
+    dispatch(addComment({
+      ...blog,
+      comments: blog.comments.concat(commentInput.value)
+    }))
+    resetComment()
+  };
+
   return <>
     <h2>{blog.title}</h2>
 
@@ -35,6 +50,21 @@ const Blog = ({ blog }) => {
     {removeAllowed &&
       <button onClick={handleRemoval}>remove</button>
     }
+
+    <h2>comments</h2>
+    <form method="POST"
+      action={`/blogs/${blog.id}/comments`}
+      onSubmit={handleComment}>
+      <input {...commentInput} />
+      <button type="submit">add comment</button>
+    </form >
+    <ul>
+      {blog.comments
+        .map((c, i) =>
+          // it seems these keys must be globally unique
+          <li key={`${blog.id}-comment-id-${i}`}>{c}</li>
+        )}
+    </ul>
   </>
 
 

@@ -30,6 +30,7 @@ button.login {
     margin-left: 0.5em;
 }
 
+li:nth-child(even),
 tr:nth-child(even) {
     background-color: lightgray;
 }
@@ -46,4 +47,8 @@ table {
 table td {
     border: 2px solid black;
     padding: 5px;
+}
+
+ul li {
+    padding: 2px;
 }

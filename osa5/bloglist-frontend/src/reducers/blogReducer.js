@@ -78,4 +78,22 @@ export const removeBlog = (content) => {
   };
 };
 
+export const addComment = (content) => {
+  return async (dispatch) => {
+    try {
+      const updatedBlog = await service.update(content);
+      dispatch(update(updatedBlog));
+      dispatch(
+        setFeedback([
+          `commenting "${updatedBlog.title}" by ${updatedBlog.author} succeeded`,
+        ])
+      );
+    } catch (e) {
+      dispatch(
+        setFeedback([`commenting failed: ${e.response.data.error}`, true])
+      );
+    }
+  };
+};
+
 export default slice.reducer;
