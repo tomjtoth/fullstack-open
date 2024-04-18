@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  bloglist:
+    image: tomjtoth/bloglist
+    build:
+      dockerfile: bloglist.Dockerfile
+    environment:
+      - DB_HOST=mongo
+    networks:
+      nginx:
+      default:
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7.0-rc
+    volumes:
+      - mongodb:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb:
+
+networks:
+  nginx:
+    # this actually exists on my VPS
+    external: true
