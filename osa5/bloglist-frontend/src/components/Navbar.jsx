@@ -23,7 +23,10 @@ const Navbar = () => {
             logout
           </button>
         </>
-        : <Link className="auth" to="/login">login</Link>
+        : <>
+          <Link className="auth" to="/login">login</Link>
+          <Link className="auth" to="/register">register</Link>
+        </>
       }
     </nav>
   )
