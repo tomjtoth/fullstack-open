@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "feedback",
+  name: 'feedback',
   initialState: null,
   reducers: {
     set: (_state, { payload }) => payload,

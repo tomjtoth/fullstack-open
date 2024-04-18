@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
+// TODO
+
 let config = null;
 
 const useResource = (baseUrl) => {
-  const x = useSelector({})
+  const x = useSelector({});
 
   const login = async (credentials) => {
     const response = await axios.post('/api/login', credentials);
