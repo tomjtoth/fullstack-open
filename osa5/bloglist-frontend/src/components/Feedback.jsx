@@ -5,10 +5,7 @@ const Feedback = () => {
 
   if (feedback) {
     const [msg, err = false] = feedback;
-
-    const cls = `feedback ${err ? "error" : ""}`;
-
-    return <p className={cls}>{msg}</p>;
+    return <p className={err ? "error" : "feedback"}>{msg}</p>;
   }
 };
 

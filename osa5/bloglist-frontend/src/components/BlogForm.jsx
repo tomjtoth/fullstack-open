@@ -1,72 +1,53 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { initBlogs, likeBlog, removeBlog } from "../reducers/blogReducer";
-import { logout } from "../reducers/userReducer";
-import Blog from "./Blog";
-import BlogCreationForm from "./BlogCreationform";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
+import { useField } from "../hooks/field";
 
 const BlogForm = () => {
+  const [showForm, setShowForm] = useState(false);
+
+  const { reset: reTitle, ...title } = useField();
+  const { reset: reAuthor, ...author } = useField();
+  const { reset: reUrl, ...url } = useField();
+
   const dispatch = useDispatch();
-  // this is only a local boolean to remember if showing the form
-  const [showForm, toggleForm] = useState(false);
-  const { blogs, user } = useSelector(({ blogs, user }) => ({ blogs, user }));
 
-  useEffect(() => {
-    dispatch(initBlogs());
-  }, []);
+  const toggleForm = (event) => {
+    event.preventDefault()
+    setShowForm(!showForm)
+  }
 
-  const likeBlogHandler = (blog) => () => {
-    dispatch(likeBlog(blog));
-  };
-
-  const removeBlogHandler = (blog) => () => {
-    if (confirm(`really delete "${blog.title}" by ${blog.author}?`)) {
-      dispatch(removeBlog(blog));
-    }
+  const handleBlogSubmit = (event) => {
+    event.preventDefault();
+    dispatch(
+      createBlog({
+        title: title.value,
+        author: author.value,
+        url: url.value,
+      }),
+    );
   };
 
   return (
-    <div>
-      <h2>blogs</h2>
-
-      {user && (
+    <form action="/api/blogs" method="POST">
+      {showForm &&
         <>
-          <p>{user.name} logged in</p>
-          <button
-            onClick={() => {
-              dispatch(logout());
-              localStorage.removeItem("user");
-            }}
-          >
-            logout
-          </button>
+          <h2>create new</h2>
+          title: <input {...title} />
           <br />
-          {showForm && <BlogCreationForm />}
-          <button onClick={() => toggleForm(!showForm)}>
-            {showForm ? "cancel" : "create new blog"}
+          author: <input {...author} />
+          <br />
+          url: <input {...url} />
+          <br />
+          <button type="submit" onClick={handleBlogSubmit}>
+            create
           </button>
         </>
-      )}
-
-      <ul>
-        {
-          // Arry.sort modifies the original array...
-          [...blogs]
-            .sort(({ likes: a }, { likes: b }) => b - a)
-            .map((blog) => {
-              const props = {
-                key: blog.id,
-                blog,
-                like: likeBlogHandler(blog),
-                remove:
-                  user &&
-                  user.username === blog.user.username &&
-                  removeBlogHandler(blog),
-              };
-              return <Blog {...props} />;
-            })}
-      </ul>
-    </div>
+      }
+      <button onClick={toggleForm}>
+        {showForm ? "cancel" : "create new blog"}
+      </button>
+    </form>
   );
 };
 

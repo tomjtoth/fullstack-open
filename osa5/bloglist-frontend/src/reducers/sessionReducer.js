@@ -3,7 +3,7 @@ import service from '../services/login';
 import { setFeedback } from './feedbackReducer';
 
 const slice = createSlice({
-  name: 'user',
+  name: 'session',
   initialState: null,
   reducers: {
     login: (_state, { payload }) => {

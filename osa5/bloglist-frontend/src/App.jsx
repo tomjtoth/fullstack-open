@@ -1,14 +1,60 @@
-import BlogForm from "./components/BlogForm";
-import LoginForm from "./components/LoginForm";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Routes, Route, useMatch
+} from 'react-router-dom'
+
+import Navbar from "./components/Navbar";
 import Feedback from "./components/Feedback";
+import UserLogin from "./components/UserLogin";
+import User from './components/User';
+import Users from './components/Users';
+import Blog from './components/Blog';
+import Blogs from "./components/Blogs";
+
+import { initBlogs } from './reducers/blogReducer';
+import { initUsers } from './reducers/usersReducer';
+import { login } from "./reducers/sessionReducer";
 
 const App = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initBlogs());
+    dispatch(initUsers())
+    dispatch(login());
+  }, []);
+
+  const { blogs, users } = useSelector(({ blogs, users }) =>
+    ({ blogs, users }));
+
+  const matchedUser = useMatch('/users/:id')
+  const user = matchedUser
+    ? users.find(user => user.id === matchedUser.params.id)
+    : null
+
+  const matchedBlog = useMatch('/blogs/:id')
+  const blog = matchedBlog
+    ? blogs.find(blog => blog.id === matchedBlog.params.id)
+    : null
+
   return (
     <>
+      <Navbar />
+      <h1>blog app</h1>
       <Feedback />
-      <LoginForm />
-      <BlogForm />
+      <Routes>
+        <Route path="/" element={<Blogs />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/:id" element={<Blog blog={blog} />} />
+
+        <Route path="/login" element={<UserLogin />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User user={user} />} />
+      </Routes>
     </>
+
   );
 };
 

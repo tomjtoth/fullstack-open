@@ -1,4 +1,5 @@
-.feedback {
+.feedback,
+.error {
     color: green;
     background: lightgrey;
     font-size: 20px;
@@ -8,6 +9,41 @@
     margin-bottom: 10px;
 }
 
-.feedback.error {
+.error {
     color: red
+}
+
+nav>a {
+    padding: 5px;
+}
+
+nav {
+    background-color: lightgray;
+    padding: 5px;
+}
+
+nav .auth {
+    float: right;
+}
+
+button.login {
+    margin-left: 0.5em;
+}
+
+tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+th {
+    background-color: gray;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+
+table td {
+    border: 2px solid black;
+    padding: 5px;
 }

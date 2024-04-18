@@ -1,37 +1,43 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { likeBlog, removeBlog } from "../reducers/blogReducer"
 
-const Blog = ({ blog, like, remove }) => {
-  const [expanded, toggleInfo] = useState(false);
+const Blog = ({ blog }) => {
 
-  return (
-    <li>
-      {blog.title} {blog.author}
-      <button onClick={() => toggleInfo(!expanded)} className="toggle">
-        {expanded ? "collapse" : "expand"}
-      </button>
-      {expanded && (
-        <ul>
-          <li>{blog.url}</li>
-          <li>
-            likes {blog.likes}
-            <button onClick={like} className="like">
-              like
-            </button>
-          </li>
-          <li>added by {blog.user.name}</li>
-          {remove && (
-            <button onClick={remove} className="remove">
-              remove this
-            </button>
-          )}
-        </ul>
-      )}
-    </li>
-  );
-};
+  const dispatch = useDispatch()
 
-// Blog.propTypes = {
-//     x: PropTypes.array.isRequired
-// };
+  const session = useSelector(({ session }) => session)
 
-export default Blog;
+  if (!blog) return null;
+
+  const removeAllowed = session
+    && session.username === blog.user.username
+
+  const handleLike = () => {
+    dispatch(likeBlog(blog));
+  };
+
+  const handleRemoval = () => {
+    if (confirm(`really delete "${blog.title}" by ${blog.author}?`)) {
+      dispatch(removeBlog(blog));
+    }
+  };
+
+  return <>
+    <h2>{blog.title}</h2>
+
+    Click <Link to={blog.url}>here</Link> for more info.
+    <br />
+    {blog.likes} likes <button onClick={handleLike}>like</button>
+    <br />
+    added by {blog.user.name}
+
+    {removeAllowed &&
+      <button onClick={handleRemoval}>remove</button>
+    }
+  </>
+
+
+}
+
+export default Blog

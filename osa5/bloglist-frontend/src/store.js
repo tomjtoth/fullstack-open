@@ -1,10 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import blogs from "./reducers/blogReducer";
-import user from "./reducers/userReducer";
-import feedback from "./reducers/feedbackReducer";
+import { configureStore } from '@reduxjs/toolkit';
+import blogs from './reducers/blogReducer';
+import session from './reducers/sessionReducer';
+import users from './reducers/usersReducer';
+import feedback from './reducers/feedbackReducer';
 
 const store = configureStore({
-  reducer: { blogs, user, feedback },
+  reducer: { blogs, session, users, feedback },
 });
 
 export default store;

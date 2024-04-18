@@ -1,20 +1,17 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useField } from "../hooks/field";
-import { login } from "../reducers/userReducer";
+import { login } from "../reducers/sessionReducer";
 
 const LoginForm = () => {
   const { reset: resetUser, ...username } = useField();
   const { reset: resetPass, ...password } = useField('password');
-  const user = useSelector(({ user }) => user);
+  const session = useSelector(({ session }) => session);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    dispatch(login());
-  }, []);
-
-  if (user) return null;
+  if (session) return navigate('/blogs');
 
   const handleLogin = async (event) => {
     event.preventDefault();
