@@ -43,6 +43,7 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
 
   - `git checkout 05ae416454958e29dae8d57fdd0f36a2cc859c2e`
 
-- [osa7](https://github.com/tomjtoth/fullstack-open/tree/)
-  - `gitcheckout `
+- [osa7](https://github.com/tomjtoth/fullstack-open/tree/57eed8a46d27fd1e438423a9265d34890dfca3f9)
+  - `git checkout 57eed8a46d27fd1e438423a9265d34890dfca3f9`
   - muunsin koko frontendin reduxiin
+  - en jaksanut vielä tätäkin tunkea mun VPS:ään
