@@ -11,7 +11,9 @@ const Books = ({ show }) => {
       }
     }
   `
-  const result = useQuery(ALL_BOOKS);
+  const result = useQuery(ALL_BOOKS, {
+    pollInterval: 2000
+  });
 
   return !show
     ? null

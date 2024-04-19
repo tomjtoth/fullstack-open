@@ -11,7 +11,9 @@ const Authors = ({ show }) => {
       }
     }
   `
-  const result = useQuery(ALL_AUTHORS);
+  const result = useQuery(ALL_AUTHORS, {
+    pollInterval: 2000
+  });
 
   return !show
     ? null
