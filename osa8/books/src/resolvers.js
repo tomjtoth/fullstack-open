@@ -32,6 +32,15 @@ const resolvers = {
       books.push(book);
       return book;
     },
+
+    editAuthor: (_root, { name, setBornTo }) => {
+      const author = authors.find((a) => a.name === name);
+      if (author) {
+        author.born = setBornTo;
+        return author;
+      }
+      return null;
+    },
   },
 };
 
