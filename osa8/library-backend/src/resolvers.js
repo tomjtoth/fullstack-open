@@ -5,17 +5,10 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: (_root, args) => {
-      let result = books;
-
-      if (args && args.author)
-        result = result.filter((b) => b.author === args.author);
-
-      if (args && args.genre)
-        result = result.filter((b) => b.genres.includes(args.genre));
-
-      return result;
-    },
+    allBooks: (_root, { author, genre }) =>
+      books
+        .filter((book) => !author || book.author === author)
+        .filter((book) => !genre || book.genres.includes(genre)),
     allAuthors: () =>
       authors.map((a) => ({
         ...a,
