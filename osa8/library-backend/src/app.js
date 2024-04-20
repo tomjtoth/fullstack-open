@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const resolvers = require('./resolvers');
 const typeDefs = require('./typedefs');
+const { context } = require('./utils/middleware');
 
 mongoose.set('strictQuery', false);
 
@@ -30,6 +31,7 @@ const app = () => {
 
   startStandaloneServer(server, {
     listen: { port: 4000 },
+    context,
   }).then(({ url }) => {
     console.log(`Server ready at ${url}`);
   });
