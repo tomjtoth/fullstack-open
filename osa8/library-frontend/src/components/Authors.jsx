@@ -71,9 +71,15 @@ const Authors = ({ show }) => {
           <form onSubmit={updateYear}>
             <div>
               name
-              <input name="name"
-                value={name}
-                onChange={({ target }) => setName(target.value)} />
+              <select name="name" value={name} required
+                onChange={({ target }) => setName(target.value)}
+              >
+                <option value="" disabled>pick one</option>)
+
+                {authors.map(({ id, name }) =>
+                  <option key={`${id}-opt`} value={name}>{name}</option>)
+                }
+              </select>
             </div>
             <div>
               born
