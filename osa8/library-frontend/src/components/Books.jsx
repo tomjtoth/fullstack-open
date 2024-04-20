@@ -1,18 +1,10 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries';
 
 const Books = ({ show }) => {
 
-  const ALL_BOOKS = gql`
-    query {
-      allBooks {
-        title
-        author
-        published
-      }
-    }
-  `
   const result = useQuery(ALL_BOOKS, {
-    pollInterval: 2000
+    // pollInterval: 2000
   });
 
   return !show
