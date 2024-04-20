@@ -4,9 +4,9 @@ const Book = require('./models/book');
 
 const resolvers = {
   Query: {
-    bookCount: async () => Book.collection.countDocuments(),
+    bookCount: async () => await Book.collection.countDocuments(),
 
-    authorCount: async () => Author.collection.countDocuments(),
+    authorCount: async () => await Author.collection.countDocuments(),
 
     allBooks: async (_root, { author, genre }) => {
       const foundAuthor = await Author.findOne({ name: author });
@@ -21,12 +21,16 @@ const resolvers = {
         .filter((book) => !genre || book.genres.includes(genre));
     },
 
-    allAuthors: () => {
-      const authors = Array.from(Author.find());
+    allAuthors: async () => {
+      const authors = Array.from(await Author.find());
+      const books = Array.from(await Book.find().populate('author'));
 
-      return authors.map((author) => ({
-        ...author,
-        bookCount: Book.find({ author }).length,
+      return authors.map(({ name, born, _id }) => ({
+        name,
+        born,
+        bookCount: books.filter(
+          (b) => b.author._id.toString() === _id.toString()
+        ).length,
       }));
     },
   },
