@@ -5,7 +5,7 @@ const { startStandaloneServer } = require('@apollo/server/standalone');
 const mongoose = require('mongoose');
 
 const resolvers = require('./resolvers');
-const typeDefs = require('./typedefs');
+const schema = require('./schema');
 const { context } = require('./utils/middleware');
 
 mongoose.set('strictQuery', false);
@@ -25,7 +25,7 @@ const app = () => {
     });
 
   const server = new ApolloServer({
-    typeDefs,
+    typeDefs: schema,
     resolvers,
   });
 
