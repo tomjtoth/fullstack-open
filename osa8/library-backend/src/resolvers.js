@@ -88,8 +88,8 @@ const resolvers = {
       return updatedAuthor;
     },
 
-    createUser: async (_root, { username }) => {
-      const user = new User({ username });
+    createUser: async (_root, { username, favoriteGenre }) => {
+      const user = new User({ username, favoriteGenre });
 
       return user.save().catch((error) => {
         throw new GraphQLError('Creating the user failed', {
