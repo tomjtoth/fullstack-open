@@ -1,33 +1,49 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries';
+import { ALL_BOOKS, GET_FAV_GENRE } from '../queries';
 
 const Books = ({ page }) => {
+
+  const fav = page === 'fav';
 
   const [books, setBooks] = useState([]);
   const [genre, setGenre] = useState('');
 
   const sg = (val) => () => setGenre(val);
 
-  const booksResult = useQuery(ALL_BOOKS, {
-    // pollInterval: 2000
+  const allBooksQry = useQuery(ALL_BOOKS, {
+    variables: {
+      genre
+    }
   });
 
+  const favGenQry = useQuery(GET_FAV_GENRE)
+
   useEffect(() => {
-    if (booksResult.data) {
-      if (booksResult.data.allBooks === null) return
+    if (allBooksQry.data) {
+      if (allBooksQry.data.allBooks === null) return
 
-      setBooks([...booksResult.data.allBooks])
+      setBooks([...allBooksQry.data.allBooks])
     }
-  }, [booksResult.data])
+  }, [allBooksQry.data, genre])
 
-  return page !== 'books'
+  useEffect(() => {
+    if (fav && favGenQry.data) {
+      if (favGenQry.data.favoriteGenre === null) return
+
+      setGenre(favGenQry.data.me.favoriteGenre)
+    }
+  }, [favGenQry.data, fav])
+
+  return page !== 'books' && !fav
     ? null
-    : (booksResult.loading
+    : (allBooksQry.loading
       ? <div>loading...</div>
       : (
         <div>
-          <h2>books</h2>
+          <h2>{fav ? 'recommendations' : 'books'}</h2>
+
+          {fav && <p>books in your favorite genre <strong>patterns</strong></p>}
 
           <table>
             <tbody>
@@ -36,37 +52,38 @@ const Books = ({ page }) => {
                 <th>author</th>
                 <th>published</th>
               </tr>
-              {books
-                .filter(b => genre === '' || b.genres.includes(genre))
-                .map((a) => (
-                  <tr key={a.title}>
-                    <td>{a.title}</td>
-                    <td>{a.author.name}</td>
-                    <td>{a.published}</td>
-                  </tr>
-                ))}
+              {books.map((a) => (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author.name}</td>
+                  <td>{a.published}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
-          <h3>filter by genre</h3>
-          <label htmlFor="default-genre">all</label>
-          <input type="radio" value="" checked={genre === ''}
-            name="genre"
-            id="default-genre"
-            onClick={sg('')} />
-          {[...new Set(books
-            .map(({ genres }) => genres)
-            .flat())
-          ].sort().map(g => {
+          {!fav && <>
+            <h3>filter by genre</h3>
+            <label htmlFor="default-genre">all</label>
+            <input type="radio" value="" defaultChecked
+              name="genre"
+              id="default-genre"
+              onClick={sg('')} />
+            {[...new Set(books
+              .map(({ genres }) => genres)
+              .flat())
+            ].sort().map(gen => {
 
-            const id = `rbtn-${g}`
+              const id = `rbtn-${gen}`
 
-            return <div key={g}>
-              <label htmlFor={id}>{g}</label>
-              <input type="radio" name="genre" id={id}
-                onClick={sg(g)}
-                checked={genre === g} />
-            </div>
-          })}
+              return <div key={gen}>
+                <label htmlFor={id}>{gen}</label>
+                <input type="radio" name="genre" id={id}
+                  // React was complaining about onClick
+                  onChange={sg(gen)}
+                  checked={genre === gen} />
+              </div>
+            })}
+          </>}
         </div>
       )
     );

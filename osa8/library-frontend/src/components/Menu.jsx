@@ -8,6 +8,7 @@ const Menu = ({ setPage, token, logout }) => {
       {token
         ? <>
           <button onClick={sp("newBook")}>add book</button>
+          <button onClick={sp("fav")}>recommend</button>
           <button onClick={logout}>logout</button>
         </>
         : <button onClick={sp('login')}>login</button>

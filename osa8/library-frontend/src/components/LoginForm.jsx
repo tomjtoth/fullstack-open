@@ -10,7 +10,8 @@ const LoginForm = ({ setError, setToken, page }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      setError(error.graphQLErrors
+        .map(({ message }) => message).join('\n'))
     }
   })
 
@@ -25,7 +26,11 @@ const LoginForm = ({ setError, setToken, page }) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    login({ variables: { username, password } })
+    const data = { variables: { username, password } }
+
+    setUsername('')
+    setPassword('')
+    login(data)
   }
 
   return page === 'login' ? (
