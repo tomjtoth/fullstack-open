@@ -4,7 +4,9 @@ const ALL_BOOKS = gql`
   query {
     allBooks {
       title
-      author
+      author {
+        name
+      }
       published
     }
   }
@@ -24,7 +26,9 @@ const ADD_BOOK = gql`
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+      }
       published
       id
       genres
@@ -52,4 +56,12 @@ const EDIT_AUTHOR = gql`
   }
 `;
 
-export { ALL_BOOKS, ADD_BOOK, ALL_AUTHORS, EDIT_AUTHOR };
+const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      value
+    }
+  }
+`;
+
+export { ALL_BOOKS, ADD_BOOK, ALL_AUTHORS, EDIT_AUTHOR, LOGIN };
