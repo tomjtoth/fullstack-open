@@ -1,26 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import diagData from '../data/diagnoses';
-import patiData from '../data/patients';
+import router from './router';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/api', router);
 
 const PORT = 3001;
-
-app.get('/api/ping', (_req, res) => {
-  console.log('someone pinged here');
-  res.send('pong');
-});
-
-app.get('/api/diagnoses', (_req, res) => {
-  res.json(diagData);
-});
-
-app.get('/api/patients', (_req, res) => {
-  res.json(patiData);
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
