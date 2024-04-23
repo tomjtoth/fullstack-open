@@ -14,6 +14,7 @@ const Books = ({ page }) => {
   const allBooksQry = useQuery(ALL_BOOKS
     // using variables and not using any variables create 2 different queries
     // reverting to filtering on client side (which made much more sense anyways...)
+    // https://github.com/urql-graphql/urql/issues/2423#issuecomment-1108618437
 
     // , { variables: { genre } }
   );
