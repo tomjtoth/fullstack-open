@@ -44,6 +44,12 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
   - `git checkout 05ae416454958e29dae8d57fdd0f36a2cc859c2e`
 
 - [osa7](https://github.com/tomjtoth/fullstack-open/tree/57eed8a46d27fd1e438423a9265d34890dfca3f9)
+
   - `git checkout 57eed8a46d27fd1e438423a9265d34890dfca3f9`
   - muunsin koko frontendin reduxiin
   - en jaksanut vielä tätäkin tunkea mun VPS:ään
+
+- [osa8](https://github.com/tomjtoth/fullstack-open/tree/c4d38234a8a34f68566ce5141368cc5d4544f682)
+
+  - `git checkout c4d38234a8a34f68566ce5141368cc5d4544f682`
+  - tehtävä `8.26` skipattu
