@@ -11,11 +11,12 @@ const Books = ({ page }) => {
 
   const sg = (val) => () => setGenre(val);
 
-  const allBooksQry = useQuery(ALL_BOOKS, {
-    variables: {
-      genre
-    }
-  });
+  const allBooksQry = useQuery(ALL_BOOKS
+    // using variables and not using any variables create 2 different queries
+    // reverting to filtering on client side (which made much more sense anyways...)
+
+    // , { variables: { genre } }
+  );
 
   const favGenQry = useQuery(GET_FAV_GENRE)
 
@@ -52,13 +53,16 @@ const Books = ({ page }) => {
                 <th>author</th>
                 <th>published</th>
               </tr>
-              {books.map((a) => (
-                <tr key={a.title}>
-                  <td>{a.title}</td>
-                  <td>{a.author.name}</td>
-                  <td>{a.published}</td>
-                </tr>
-              ))}
+              {[...books]
+                // must filter on client side, see prev commit
+                .filter(b => genre === '' || b.genres.includes(genre))
+                .map((a) => (
+                  <tr key={a.title}>
+                    <td>{a.title}</td>
+                    <td>{a.author.name}</td>
+                    <td>{a.published}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           {!fav && <>
