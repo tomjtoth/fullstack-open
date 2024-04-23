@@ -1,11 +1,10 @@
-import qs from 'qs';
-import express = require('express');
+import express from 'express';
 import { calculateBmi } from './bmiCalculator';
+import { calculateExercises } from './exerciseCalculator';
 import { argParser } from './argParser';
 
 const app = express();
-
-app.set('query parser', (str: string) => qs.parse(str));
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
@@ -30,6 +29,25 @@ app.get('/bmi', (req, res) => {
       res.status(400).json({
         error: 'both "height" and "weight" must be defined in search params',
       });
+  }
+});
+
+app.post('/exercises', (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { daily_exercises, target } = req.body;
+
+  if (!daily_exercises || !target)
+    return res.status(400).json({
+      error: 'parameters missing',
+    });
+
+  try {
+    const [trgt, ...hours] = argParser([target, ...daily_exercises]);
+    return res.json(calculateExercises(hours, trgt));
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ error: `malformatted parameters: ${e.message}` });
   }
 });
 

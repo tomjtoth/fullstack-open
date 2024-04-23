@@ -10,7 +10,7 @@ interface Res {
   average: number;
 }
 
-function calculateExercises(hours: number[], target: number): Res {
+export function calculateExercises(hours: number[], target: number): Res {
   const periodLength = hours.length;
   let trainingDays = 0;
   let average = 0;
