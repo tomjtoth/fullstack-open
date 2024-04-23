@@ -41,7 +41,7 @@ function calculateExercises(hours: number[], target: number): Res {
 }
 
 try {
-  const [target, ...hours] = argParser();
+  const [target, ...hours] = argParser(process.argv.slice(2));
 
   console.log(calculateExercises(hours, target));
 } catch (e: unknown) {

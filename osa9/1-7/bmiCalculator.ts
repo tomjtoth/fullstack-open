@@ -15,7 +15,7 @@ function calculateBmi(height: number, weight: number): string {
 }
 
 try {
-  const [height, weight] = argParser(2);
+  const [height, weight] = argParser(process.argv.slice(2), { max: 2 });
 
   console.log(calculateBmi(height, weight));
 } catch (e: unknown) {
