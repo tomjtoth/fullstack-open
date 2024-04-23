@@ -7,7 +7,7 @@ function calculateBmi(height: number, weight: number): string {
   if (bmi < 17) return 'moderate thinness';
   if (bmi < 18.5) return 'mild thinness';
   if (bmi < 25) return 'normal';
-  if (bmi < 30) return 'pr-obese';
+  if (bmi < 30) return 'pre-obese';
   if (bmi < 35) return 'obese class 1';
   if (bmi < 40) return 'obese class 2';
 
