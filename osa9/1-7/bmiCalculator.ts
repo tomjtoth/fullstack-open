@@ -1,4 +1,4 @@
-import { argParser } from './utils/numParser';
+import { argParser } from './argParser';
 
 export function calculateBmi(height: number, weight: number): string {
   const bmi = weight / Math.pow(height / 100, 2);

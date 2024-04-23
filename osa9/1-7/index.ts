@@ -1,7 +1,7 @@
 import qs from 'qs';
 import express = require('express');
 import { calculateBmi } from './bmiCalculator';
-import { argParser } from './utils/numParser';
+import { argParser } from './argParser';
 
 const app = express();
 

@@ -1,4 +1,4 @@
-import { argParser } from './utils/numParser';
+import { argParser } from './argParser';
 
 interface Res {
   periodLength: number;
