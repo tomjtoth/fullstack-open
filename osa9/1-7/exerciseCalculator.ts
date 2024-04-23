@@ -26,7 +26,7 @@ function calculateExercises(hours: number[], target: number): Res {
   if (trainingDays > 0) {
     average /= periodLength;
     if (average > target) rating = 3;
-    if (average / target > 0.85) rating = 2;
+    else if (average / target > 0.85) rating = 2;
   }
 
   return {
