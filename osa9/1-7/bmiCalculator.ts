@@ -1,3 +1,5 @@
+import { argParser } from './utils/numParser';
+
 function calculateBmi(height: number, weight: number): string {
   const bmi = weight / Math.pow(height / 100, 2);
 
@@ -12,4 +14,10 @@ function calculateBmi(height: number, weight: number): string {
   return 'obese class 3';
 }
 
-console.log(calculateBmi(180, 74));
+try {
+  const [height, weight] = argParser(2);
+
+  console.log(calculateBmi(height, weight));
+} catch (e: unknown) {
+  if (e instanceof Error) console.error(`failed to parse args: ${e.message}`);
+}

@@ -1,3 +1,5 @@
+import { argParser } from './utils/numParser';
+
 interface Res {
   periodLength: number;
   trainingDays: number;
@@ -38,4 +40,10 @@ function calculateExercises(hours: number[], target: number): Res {
   };
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const [target, ...hours] = argParser();
+
+  console.log(calculateExercises(hours, target));
+} catch (e: unknown) {
+  if (e instanceof Error) console.error(`failed to parse args: ${e.message}`);
+}
