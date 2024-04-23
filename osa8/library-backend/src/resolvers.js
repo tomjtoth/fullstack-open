@@ -31,16 +31,16 @@ const resolvers = {
       const authors = Array.from(await Author.find());
       const books = Array.from(await Book.find().populate('author'));
 
-      return authors.map(({ name, born, _id }) => ({
-        name,
-        born,
-        bookCount: books.filter(
-          (b) => b.author._id.toString() === _id.toString()
-        ).length,
-      }));
+      return authors.map((author) => {
+        author.bookCount = books.filter(
+          (b) => b.author._id.toString() === author._id.toString()
+        ).length;
+
+        return author;
+      });
     },
 
-    me: (_root, args, { currentUser }) => currentUser,
+    me: (_root, _args, { currentUser }) => currentUser,
   },
 
   Mutation: {
