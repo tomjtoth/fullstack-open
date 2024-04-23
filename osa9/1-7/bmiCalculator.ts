@@ -1,6 +1,6 @@
 import { argParser } from './utils/numParser';
 
-function calculateBmi(height: number, weight: number): string {
+export function calculateBmi(height: number, weight: number): string {
   const bmi = weight / Math.pow(height / 100, 2);
 
   if (bmi < 16) return 'severe thinness';
