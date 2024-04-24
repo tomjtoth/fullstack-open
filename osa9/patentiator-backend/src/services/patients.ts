@@ -1,3 +1,4 @@
+import { v1 as uuid } from 'uuid';
 import data from '../../data/patients';
 import { PatientNS } from '../types';
 
