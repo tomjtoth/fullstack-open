@@ -13,7 +13,9 @@ interface Patient {
   occupation: string;
 }
 
+type NewPatient = Omit<Patient, 'id'>;
+
 /** non-sensitive? Patient data */
 type PatientNS = Omit<Patient, 'ssn'>;
 
-export { Diagnosis, Patient, PatientNS };
+export { Diagnosis, NewPatient, Patient, PatientNS };
