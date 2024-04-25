@@ -1,11 +1,11 @@
 import { FlightsProps } from '../types';
 
-const Flights = (props: FlightsProps): JSX.Element => {
+const Flights = ({ flights }: FlightsProps): JSX.Element => {
   return (
     <>
       <h2>Diary entries</h2>
       <ul>
-        {props.flights.map(({ id, date, visibility, weather }) => (
+        {flights.map(({ id, date, visibility, weather }) => (
           <li key={id}>
             <strong>{date}</strong>
             <br />

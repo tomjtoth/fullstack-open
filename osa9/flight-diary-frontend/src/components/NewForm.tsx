@@ -3,7 +3,11 @@ import { NewFormProps } from '../types';
 import { toNewDiaryEntry } from '../utils';
 import svc from '../services/flights';
 
-const NewForm = (props: NewFormProps): JSX.Element => {
+const NewForm = ({
+  entries,
+  setEntries,
+  setFeedback,
+}: NewFormProps): JSX.Element => {
   // you SHALL NOT TEST around midnight
   const [defDate] = new Date().toISOString().split('T');
 
@@ -15,9 +19,13 @@ const NewForm = (props: NewFormProps): JSX.Element => {
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    svc
-      .addNew(toNewDiaryEntry({ date, visibility, comment, weather }))
-      .then((addedEntry) => props.setEntries(props.entries.concat(addedEntry)));
+    try {
+      svc
+        .addNew(toNewDiaryEntry({ date, visibility, comment, weather }))
+        .then((addedEntry) => setEntries(entries.concat(addedEntry)));
+    } catch (e: unknown) {
+      if (e instanceof Error) setFeedback(e.message);
+    }
 
     setDate(defDate);
     setVisibility('');
@@ -57,6 +65,7 @@ const NewForm = (props: NewFormProps): JSX.Element => {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
+      <br />
       <button type="submit">add</button>
     </form>
   );
