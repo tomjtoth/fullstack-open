@@ -5,7 +5,7 @@ const isString = (text: unknown): text is string => {
 };
 
 // based on https://fi.wikipedia.org/wiki/Henkil%C3%B6tunnus
-const parseSsn = (ssn: unknown): SSN => {
+const parseSsn = (ssn: unknown, gender: Gender, dateOfBirth: Date): SSN => {
   const err = (msg: string) => new Error(`Invalid SSN: "${ssn}", ${msg}`);
 
   if (!isString(ssn)) {
@@ -23,17 +23,40 @@ const parseSsn = (ssn: unknown): SSN => {
     const [_all, pp, kk, vv, y18s, y19s, _y20s, nnn, t] = parts;
 
     const nnnNum = Number(nnn);
+
+    if (
+      (nnnNum % 2 === 0 && gender === Gender.male) ||
+      (nnnNum % 2 === 1 && gender === Gender.female)
+      // HETU wiki does not recognize 'other' than these 2, so skipping checks...
+    )
+      throw err(
+        `nnn should be odd for men, even for women, yet yours is "${nnn}" and you set "${gender}" as your gender`
+      );
+
     if (nnnNum < 2 || nnnNum > 899)
       throw err(`nnn should be between 002 <= ${nnn} <= 899`);
 
     const year = (y18s ? 1800 : y19s ? 1900 : 2000) + Number(vv);
 
-    const dateStr = `${pp}/${kk}/${year}`;
+    const dateStr = `${kk}/${pp}/${year}`;
+    let dateFromSSN;
+
     try {
-      new Date(dateStr);
+      dateFromSSN = new Date(dateStr);
     } catch {
       throw err(`"${dateStr}" is an invalid date`);
     }
+
+    if (
+      dateFromSSN.getFullYear() !== year ||
+      dateFromSSN.getMonth() !== Number(kk) - 1 ||
+      dateFromSSN.getDate() !== Number(pp)
+    )
+      throw err(
+        `according to your SSN you were born on ${year}-${kk}-${pp}, yet you set your date of birth as ${
+          dateOfBirth.toISOString().split('T')[0]
+        }`
+      );
 
     const tIdx = Number(pp + kk + vv + nnn) % 31;
     const tChr = '0123456789ABCDEFHJKLMNPRSTUVWXY'[tIdx];
@@ -86,11 +109,14 @@ const toNewPatient = (obj: unknown): NewPatient => {
     'gender' in obj &&
     'occupation' in obj
   ) {
+    const gender = parseGender(obj.gender);
+    const dateOfBirth = parseDate(obj.dateOfBirth);
+
     const newEntry: NewPatient = {
       name: parseString(obj.name),
-      dateOfBirth: parseDate(obj.dateOfBirth),
-      ssn: parseSsn(obj.ssn),
-      gender: parseGender(obj.gender),
+      dateOfBirth,
+      ssn: parseSsn(obj.ssn, gender, dateOfBirth),
+      gender,
       occupation: parseString(obj.occupation),
       entries: [],
     };
