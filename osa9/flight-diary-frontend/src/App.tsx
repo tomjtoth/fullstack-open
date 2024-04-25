@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
-import { DiaryEntry } from './types';
+
+import { NonSensitiveDiaryEntry } from './types';
 import svc from './services/flights';
+
 import Flights from './components/Flights';
+import NewForm from './components/NewForm';
 
 function App() {
-  const [flights, setFlights] = useState<DiaryEntry[]>([]);
+  const [entries, setEntries] = useState<NonSensitiveDiaryEntry[]>([]);
 
   useEffect(() => {
-    svc.getAll(setFlights);
+    svc.getAll().then((entries) => setEntries(entries));
   }, []);
 
   return (
     <>
-      <Flights flights={flights} />
+      <NewForm entries={entries} setEntries={setEntries} />
+      <Flights flights={entries} />
     </>
   );
 }

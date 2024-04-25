@@ -1,10 +1,16 @@
 import axios from 'axios';
-import { DiarySetter } from '../types';
+import { NewDiaryEntry, NonSensitiveDiaryEntry } from '../types';
 
 const baseUrl = '/api/diaries';
 
-const getAll = (setter: DiarySetter) => {
-  axios.get(baseUrl).then(({ data }) => setter(data));
+const getAll = async (): Promise<NonSensitiveDiaryEntry[]> => {
+  const resp = await axios.get<NonSensitiveDiaryEntry[]>(baseUrl);
+  return resp.data;
 };
 
-export default { getAll };
+const addNew = async (content: NewDiaryEntry) => {
+  const response = await axios.post<NonSensitiveDiaryEntry>(baseUrl, content);
+  return response.data;
+};
+
+export default { getAll, addNew };
