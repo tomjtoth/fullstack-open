@@ -19,6 +19,13 @@ router.get('/patients', (_req, res) => {
   res.json(patiSvc.getAllNS());
 });
 
+router.get('/patients/:id', (req, res) => {
+  const foundPatient = patiSvc.getById(req.params.id);
+  if (foundPatient) return res.json(foundPatient);
+
+  return res.status(404).json({ error: 'patient not found' });
+});
+
 router.post('/patients', (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
@@ -31,7 +38,6 @@ router.post('/patients', (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
-
 });
 
 export default router;
