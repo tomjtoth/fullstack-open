@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NewFormProps } from '../types';
+import { NewFormProps, Weather, Visibility } from '../types';
 import { toNewDiaryEntry } from '../utils';
 import svc from '../services/flights';
 
@@ -9,9 +9,9 @@ const NewForm = ({
   setFeedback,
 }: NewFormProps): JSX.Element => {
   // you SHALL NOT TEST around midnight
-  const [defDate] = new Date().toISOString().split('T');
+  const [today] = new Date().toISOString().split('T');
 
-  const [date, setDate] = useState(defDate);
+  const [date, setDate] = useState(today);
   const [visibility, setVisibility] = useState('');
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('');
@@ -22,12 +22,14 @@ const NewForm = ({
     try {
       svc
         .addNew(toNewDiaryEntry({ date, visibility, comment, weather }))
-        .then((addedEntry) => setEntries(entries.concat(addedEntry)));
+        .then((addedEntry) => {
+          if (addedEntry) setEntries(entries.concat(addedEntry));
+        });
     } catch (e: unknown) {
       if (e instanceof Error) setFeedback(e.message);
     }
 
-    setDate(defDate);
+    setDate(today);
     setVisibility('');
     setWeather('');
     setComment('');
@@ -42,21 +44,45 @@ const NewForm = ({
         onChange={(e) => setDate(e.target.value)}
       />
       <br />
-      visibility{' '}
-      <input
-        type="text"
-        name="visibility"
-        value={visibility}
-        onChange={(e) => setVisibility(e.target.value)}
-      />
+      visibility:{' '}
+      {Object.values(Visibility).map((enumVal) => {
+        const enumStr = enumVal.toString();
+        const id = `visibility-${enumVal}`;
+
+        return (
+          <div key={id}>
+            <input
+              id={id}
+              type="radio"
+              name="visibility"
+              value={visibility}
+              onChange={() => setVisibility(enumStr)}
+              required
+            />
+            <label htmlFor={id}>{enumStr}</label>
+          </div>
+        );
+      })}
       <br />
-      weather{' '}
-      <input
-        type="text"
-        name="weather"
-        value={weather}
-        onChange={(e) => setWeather(e.target.value)}
-      />
+      weather:{' '}
+      {Object.values(Weather).map((enumVal) => {
+        const enumStr = enumVal.toString();
+        const id = `weather-${enumVal}`;
+
+        return (
+          <div key={id}>
+            <input
+              id={id}
+              type="radio"
+              name="weather"
+              value={weather}
+              onChange={() => setWeather(enumStr)}
+              required
+            />
+            <label htmlFor={id}>{enumStr}</label>
+          </div>
+        );
+      })}
       <br />
       comment{' '}
       <input

@@ -1,9 +1,12 @@
 import {
   NewDiaryEntry,
   NonSensitiveDiaryEntry,
+  Weather,
+  Visibility,
 } from '../../flight-diary-backend/src/types';
 
 export type { NewDiaryEntry, NonSensitiveDiaryEntry };
+export { Weather, Visibility };
 
 export interface FlightsProps {
   flights: NonSensitiveDiaryEntry[];
