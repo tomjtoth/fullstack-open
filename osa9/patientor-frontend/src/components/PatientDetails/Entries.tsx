@@ -1,11 +1,19 @@
+import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Entry } from '../../types';
+import { Entry, Diagnosis } from '../../types';
+import svc from '../../services/diagnoses';
 
 interface Props {
   entries: Entry[];
 }
 
 const Entries = ({ entries }: Props): JSX.Element => {
+  const [diags, setDiags] = useState<Diagnosis[]>([]);
+
+  useEffect(() => {
+    svc.getAll().then((diags) => setDiags(diags));
+  }, []);
+
   return (
     <>
       <Typography variant="h4" style={{ marginBottom: '0.5em' }}>
@@ -21,7 +29,9 @@ const Entries = ({ entries }: Props): JSX.Element => {
               {diagnosisCodes && (
                 <ul>
                   {diagnosisCodes.map((dc) => (
-                    <li key={`${id}-${dc}`}>{dc}</li>
+                    <li key={`${id}-${dc}`}>
+                      {dc}: <i>{diags.find((d) => d.code === dc)?.name}</i>
+                    </li>
                   ))}
                 </ul>
               )}
