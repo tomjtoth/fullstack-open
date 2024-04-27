@@ -53,3 +53,7 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
 
   - `git checkout c4d38234a8a34f68566ce5141368cc5d4544f682`
   - tehtävä `8.26` skipattu
+
+- [osa9](https://github.com/tomjtoth/fullstack-open/tree/)
+  - `git checkout `
+  - hölmösti muunsin kaiken tyypin `dateString` tyyppiin `new Date(dateString)`

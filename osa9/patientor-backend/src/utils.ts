@@ -25,8 +25,8 @@ const parseSsn = (ssn: unknown, gender: Gender, dateOfBirth: Date): SSN => {
     const nnnNum = Number(nnn);
 
     if (
-      (nnnNum % 2 === 0 && gender === Gender.male) ||
-      (nnnNum % 2 === 1 && gender === Gender.female)
+      (nnnNum % 2 === 0 && gender === Gender.Male) ||
+      (nnnNum % 2 === 1 && gender === Gender.Female)
       // HETU wiki does not recognize 'other' than these 2, so skipping checks...
     )
       throw err(
