@@ -1,14 +1,7 @@
-export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
-}
+import { Entry, Diagnosis, Gender } from '../../patientor-backend/src/types';
 
-export enum Gender {
-  Male = "male",
-  Female = "female",
-  Other = "other"
-}
+export type { Entry, Diagnosis };
+export { Gender };
 
 export interface Patient {
   id: string;
@@ -17,6 +10,7 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
+  entries: Entry[];
 }
 
-export type PatientFormValues = Omit<Patient, "id" | "entries">;
+export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;

@@ -66,4 +66,4 @@ type NewPatient = Omit<Patient, 'id'>;
 /** non-sensitive? Patient data */
 type PatientNS = Omit<Patient, 'ssn' | 'entries'>;
 
-export { Diagnosis, NewPatient, Patient, PatientNS, SSN, Gender };
+export { Diagnosis, NewPatient, Patient, PatientNS, SSN, Gender, Entry };

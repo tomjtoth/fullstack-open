@@ -1,6 +1,8 @@
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { Typography } from '@mui/material';
+
+import Entries from './Entries';
 import { Patient, Gender } from '../../types';
 
 interface Props {
@@ -20,6 +22,7 @@ const PatientDetails = ({ patient }: Props): JSX.Element | null => {
         SSN: {patient.ssn}
         <br />
         occupation: {patient.occupation}
+        <Entries entries={patient.entries} />
       </>
     );
   }
