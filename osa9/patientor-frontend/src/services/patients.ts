@@ -22,6 +22,14 @@ const getById = async (id: string): Promise<Patient> => {
   // the Date object in backend is sent as string...
   data.entries = data.entries.map((entry) => {
     entry.date = new Date(entry.date);
+    if (entry.type === 'Hospital' && entry.discharge)
+      entry.discharge.date = new Date(entry.discharge.date);
+
+    if (entry.type === 'OccupationalHealthcare' && entry.sickLeave) {
+      entry.sickLeave.startDate = new Date(entry.sickLeave.startDate);
+      entry.sickLeave.endDate = new Date(entry.sickLeave.endDate);
+    }
+
     return entry;
   });
 

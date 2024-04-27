@@ -1,0 +1,10 @@
+li.entry {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+li.entry::marker {
+  content: '';
+}

@@ -2,7 +2,7 @@ import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { Typography } from '@mui/material';
 
-import Entries from './Entries';
+import Entries from './Entries.tsx';
 import { Patient, Gender } from '../../types';
 
 interface Props {

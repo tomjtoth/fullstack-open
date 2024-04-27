@@ -1,7 +1,22 @@
-import { Entry, Diagnosis, Gender } from '../../patientor-backend/src/types';
+import {
+  Entry,
+  Diagnosis,
+  Gender,
+  HealthCheckEntry,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  HealthCheckRating,
+} from '../../patientor-backend/src/types';
 
-export type { Entry, Diagnosis };
-export { Gender };
+export type {
+  Entry,
+  Diagnosis,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  HealthCheckEntry,
+};
+
+export { Gender, HealthCheckRating };
 
 export interface Patient {
   id: string;
