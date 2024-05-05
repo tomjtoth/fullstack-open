@@ -61,4 +61,9 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
   - tehtävät 26-29 skipattu
 
 - osa10
+
   - on [tässä](https://github.com/tomjtoth/fullstack-open-react-native) eri repossa
+
+- osa11
+
+  - on [tässä](https://github.com/tomjtoth/fullstack-open-pokedex) eri repossa
