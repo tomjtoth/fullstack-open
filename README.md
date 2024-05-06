@@ -63,6 +63,7 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
 - osa10
 
   - on [tässä](https://github.com/tomjtoth/fullstack-open-react-native) eri repossa
+  - vika tehtävä `10.27` skipattu
 
 - osa11
 
