@@ -68,3 +68,7 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
 - osa11
 
   - on [tässä](https://github.com/tomjtoth/fullstack-open-pokedex) eri repossa
+
+- osa12
+
+  - on [tässä](https://github.com/tomjtoth/fullstack-open-containers) eri repossa
