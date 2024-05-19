@@ -7,7 +7,7 @@ services:
     volumes:
       - ./osa5/bloglist-frontend/:/usr/src/app
     environment:
-      - VITE_BACKEND_URL=http://localhost:8080/api
+      - VITE_BACKEND_URL=http://localhost:8080
 
   backend:
     image: blog-back-dev
