@@ -1,0 +1,35 @@
+services:
+  frontend:
+    image: blog-front-dev
+    build:
+      context: osa5/bloglist-frontend/
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./osa5/bloglist-frontend/:/usr/src/app
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8080/api
+
+  backend:
+    image: blog-back-dev
+    build:
+      context: osa4/blogilista/
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./osa4/blogilista:/usr/src/app
+    environment:
+      - DB_HOST=mongo
+
+  mongo:
+    image: mongo:7.0-rc
+    volumes:
+      - ./osa4/blogilista/mongo_data:/data/db
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./bloglist.nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - frontend
+      - backend
