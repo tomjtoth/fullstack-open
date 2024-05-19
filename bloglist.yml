@@ -1,27 +1,27 @@
-version: '3.8'
-
 services:
-  bloglist:
-    image: tomjtoth/bloglist
-    build:
-      dockerfile: bloglist.Dockerfile
+  frontend:
+    image: blog-front
+    build: osa5/bloglist-frontend/
+
+  backend:
+    image: blog-back
+    build: osa4/blogilista/
     environment:
       - DB_HOST=mongo
-    networks:
-      nginx:
-      default:
-    restart: unless-stopped
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:7.0-rc
     volumes:
-      - mongodb:/data/db
-    restart: unless-stopped
+      - ./osa4/blogilista/mongo_data:/data/db
 
-volumes:
-  mongodb:
-
-networks:
   nginx:
-    # this actually exists on my VPS
-    external: true
+    image: nginx:1.20.1
+    volumes:
+      - ./bloglist.nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - frontend
+      - backend
