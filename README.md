@@ -72,3 +72,7 @@ Koska aion laajentaa aiempia tehtäviä suoraan, niin kantsii reposta tiettyjen 
 - osa12
 
   - on [tässä](https://github.com/tomjtoth/fullstack-open-containers) eri repossa
+
+- osa13
+
+  - on [tässä](https://github.com/tomjtoth/fullstack-open-rdb) eri repossa
