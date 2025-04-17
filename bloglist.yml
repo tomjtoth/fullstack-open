@@ -2,6 +2,7 @@ services:
   frontend:
     image: blog-front
     build: osa5/bloglist-frontend/
+    restart: unless-stopped
 
   backend:
     image: blog-back
@@ -10,11 +11,13 @@ services:
       - DB_HOST=mongo
     depends_on:
       - mongo
+    restart: unless-stopped
 
   mongo:
     image: mongo:7.0-rc
     volumes:
       - ./osa4/blogilista/mongo_data:/data/db
+    restart: unless-stopped
 
   nginx:
     image: nginx:1.20.1
@@ -25,3 +28,5 @@ services:
     depends_on:
       - frontend
       - backend
+    restart: unless-stopped
+
